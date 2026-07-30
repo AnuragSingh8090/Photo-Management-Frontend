@@ -16,9 +16,11 @@ const transformRecord = (backendRecord) => {
   // Backend: { id, title, description, dateTime, imageUrl, createdAt, updatedAt }
   // Frontend: { id, name, date, time, image, description }
   
-  const dateTime = new Date(backendRecord.dateTime)
-  const date = dateTime.toISOString().split('T')[0] // YYYY-MM-DD
-  const time = dateTime.toTimeString().split(' ')[0].substring(0, 5) // HH:MM
+  // Remove the 'Z' to treat as local time, not UTC
+  const dateTimeStr = backendRecord.dateTime.replace('Z', '')
+  const dateTime = new Date(dateTimeStr)
+  const date = dateTimeStr.split('T')[0] // YYYY-MM-DD
+  const time = dateTimeStr.split('T')[1].substring(0, 5) // HH:MM
   
   return {
     id: backendRecord.id,
@@ -55,8 +57,8 @@ export const saveRecord = async (record) => {
     const formData = new FormData()
     // Backend expects 'title' not 'name'
     formData.append('title', record.name)
-    // Backend expects 'dateTime' as a combined ISO string
-    const dateTime = `${record.date}T${record.time}:00.000Z`
+    // Backend expects 'dateTime' - send without Z to keep local time
+    const dateTime = `${record.date}T${record.time}:00.000`
     formData.append('dateTime', dateTime)
     formData.append('description', record.description || '')
     formData.append('image', record.image)
@@ -84,7 +86,7 @@ export const updateRecord = async (id, record) => {
     // Transform frontend fields to backend fields
     const updateData = {
       title: record.name,
-      dateTime: `${record.date}T${record.time}:00.000Z`,
+      dateTime: `${record.date}T${record.time}:00.000`,
       description: record.description || ''
     }
     
@@ -107,8 +109,8 @@ export const updateRecordWithImage = async (id, record) => {
     const formData = new FormData()
     // Backend expects 'title' not 'name'
     formData.append('title', record.name)
-    // Backend expects 'dateTime' as a combined ISO string
-    const dateTime = `${record.date}T${record.time}:00.000Z`
+    // Backend expects 'dateTime' - send without Z to keep local time
+    const dateTime = `${record.date}T${record.time}:00.000`
     formData.append('dateTime', dateTime)
     formData.append('description', record.description || '')
     

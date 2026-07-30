@@ -84,27 +84,29 @@ function App() {
       />
 
       {/* Header */}
-      <div className="px-6 py-3 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-primary)' }}>
-        <div className="flex items-center gap-3">
+      <div className="px-2 py-1.5 lg:px-4 lg:py-2 min-[1100px]:px-6 min-[1100px]:py-3 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-primary)' }}>
+        <div className="flex items-center gap-1.5 lg:gap-2 min-[1100px]:gap-3">
           <CameraHeaderIcon />
           <div>
-            <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Photo Manager</h1>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your photos</p>
+            <h1 className="text-base lg:text-xl min-[1100px]:text-2xl font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Photo Manager</h1>
+            <p className="text-[10px] lg:text-xs min-[1100px]:text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your photos</p>
           </div>
         </div>
         
         {/* Theme Toggle */}
-        <ThemeToggle />
+        <div className="scale-75 lg:scale-90 min-[1100px]:scale-100 origin-right">
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden gap-0">
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden md:gap-0">
         {/* LEFT SECTION - 70% - Camera/Upload */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-[70%] flex flex-col p-4 overflow-y-auto"
+          className="w-full md:w-[70%] md:flex-1 flex flex-col p-2 lg:p-4 overflow-y-auto"
         >
           <ImageCapture 
             onImageSelect={handleImageSelect} 
@@ -119,7 +121,7 @@ function App() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-[30%] flex flex-col"
+          className="w-full md:w-[30%] md:min-w-[370px] md:max-w-[620px] flex flex-col h-[50vh] md:h-auto"
         >
           <RecordsList
             records={records}

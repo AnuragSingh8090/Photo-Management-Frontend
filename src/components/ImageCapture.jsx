@@ -8,21 +8,21 @@ import { getCurrentDate, getCurrentTime, formatTime } from '../utils/dateTime'
 
 // SVG Icons
 const CameraIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
     <circle cx="12" cy="13" r="3"/>
   </svg>
 )
 
 const CameraLargeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 lg:w-12 lg:h-12 min-[1100px]:w-16 min-[1100px]:h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
     <circle cx="12" cy="13" r="3"/>
   </svg>
 )
 
 const UploadIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
     <polyline points="17 8 12 3 7 8"/>
     <line x1="12" y1="3" x2="12" y2="15"/>
@@ -30,13 +30,13 @@ const UploadIcon = () => (
 )
 
 const RefreshIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
   </svg>
 )
 
 const ImageIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
     <circle cx="8.5" cy="8.5" r="1.5"/>
     <polyline points="21 15 16 10 5 21"/>
@@ -44,7 +44,7 @@ const ImageIcon = () => (
 )
 
 const AlertIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 lg:w-12 lg:h-12 min-[1100px]:w-16 min-[1100px]:h-16 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <line x1="12" y1="8" x2="12" y2="12"/>
     <line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -52,7 +52,7 @@ const AlertIcon = () => (
 )
 
 const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 lg:w-3.5 lg:h-3.5 min-[1100px]:w-4 min-[1100px]:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
     <line x1="16" y1="2" x2="16" y2="6"/>
     <line x1="8" y1="2" x2="8" y2="6"/>
@@ -61,14 +61,14 @@ const CalendarIcon = () => (
 )
 
 const ClockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 lg:w-3.5 lg:h-3.5 min-[1100px]:w-4 min-[1100px]:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12 6 12 12 16 14"/>
   </svg>
 )
 
 const XIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
@@ -111,15 +111,19 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
   // Time picker state
   const [selectedHours, setSelectedHours] = useState(new Date().getHours())
   const [selectedMinutes, setSelectedMinutes] = useState(new Date().getMinutes())
+  const [selectedPeriod, setSelectedPeriod] = useState(new Date().getHours() >= 12 ? 'PM' : 'AM')
 
-  // Sync date and time continuously
+  // Sync date and time continuously when no file is selected
   useEffect(() => {
     if (!selectedFile) {
-      setFormData(prev => ({
-        ...prev,
-        date: getCurrentDate(),
-        time: getCurrentTime(),
-      }))
+      const interval = setInterval(() => {
+        setFormData(prev => ({
+          ...prev,
+          date: getCurrentDate(),
+          time: getCurrentTime(),
+        }))
+      }, 1000)
+      return () => clearInterval(interval)
     }
   }, [selectedFile])
 
@@ -140,20 +144,6 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
       setIsEditMode(false)
     }
   }, [editingRecord])
-
-  // Update time every second when disabled
-  useEffect(() => {
-    if (!selectedFile) {
-      const interval = setInterval(() => {
-        setFormData(prev => ({
-          ...prev,
-          date: getCurrentDate(),
-          time: getCurrentTime(),
-        }))
-      }, 1000)
-      return () => clearInterval(interval)
-    }
-  }, [selectedFile])
 
   // Initialize date/time when file is selected
   useEffect(() => {
@@ -192,13 +182,26 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
       if (imageSrc) {
         const blob = dataURItoBlob(imageSrc)
         const file = new File([blob], 'webcam-photo.jpg', { type: 'image/jpeg' })
+        
         setPreview(imageSrc)
         setSelectedFile(file)
         setImageSource('camera')
         setImageError(false)
-        onImageSelect(file)
         setIsCameraActive(false)
-        // Removed toast - only show on final save
+        
+        // Only call onImageSelect for new records, not edits
+        // (calling it during edit clears editingRecord in parent)
+        if (!isEditMode) {
+          // Capture current date and time for new records
+          const captureDate = getCurrentDate()
+          const captureTime = getCurrentTime()
+          onImageSelect(file)
+          setFormData(prev => ({
+            ...prev,
+            date: captureDate,
+            time: captureTime,
+          }))
+        }
       }
     }
   }
@@ -220,8 +223,19 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
         setSelectedFile(file)
         setImageSource('upload')
         setImageError(false)
-        onImageSelect(file)
-        // Removed toast - only show on final save
+        
+        // Only call onImageSelect and reset date/time for new records
+        // During edit mode, we keep the existing record context intact
+        if (!isEditMode) {
+          const uploadDate = getCurrentDate()
+          const uploadTime = getCurrentTime()
+          onImageSelect(file)
+          setFormData(prev => ({
+            ...prev,
+            date: uploadDate,
+            time: uploadTime,
+          }))
+        }
       }
       reader.readAsDataURL(file)
     }
@@ -331,8 +345,9 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
   useEffect(() => {
     if (isTimeDropdownOpen) {
       const [hours, minutes] = formData.time ? formData.time.split(':').map(Number) : [new Date().getHours(), new Date().getMinutes()]
-      setSelectedHours(hours)
+      setSelectedHours(hours % 12 || 12) // Convert to 12-hour format
       setSelectedMinutes(minutes)
+      setSelectedPeriod(hours >= 12 ? 'PM' : 'AM')
     }
   }, [isTimeDropdownOpen])
 
@@ -406,7 +421,7 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
       }
     } catch (error) {
       console.error('Error submitting form:', error)
-      toast.error('Operation failed', { autoClose: 2000 })
+      toast.error('Failed to save record', { autoClose: 2000 })
     } finally {
       setLoading(false)
     }
@@ -439,48 +454,66 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
 
   return (
     <>
-      <div className="h-full flex gap-4 p-4 rounded-lg shadow-sm overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
+      <div className="h-full flex flex-col min-[1100px]:flex-row gap-3 min-[1100px]:gap-4 p-3 min-[1100px]:p-4 rounded-lg shadow-sm overflow-y-auto min-[1100px]:overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
         {/* LEFT: Camera Section */}
-        <div className="flex-1 flex flex-col">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+        <div className="flex-1 flex flex-col min-h-[300px] min-[1100px]:min-h-0">
+          <div className="flex items-center justify-between mb-2 lg:mb-3">
+            <h2 className="text-lg lg:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               {isEditMode ? 'Edit Record' : 'Upload Photo'}
             </h2>
             
-            {/* Re-upload or Re-capture button - ONLY show when NOT in edit mode */}
-            {preview && !isCameraActive && !isEditMode && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  if (imageSource === 'camera') {
-                    // Re-capture: clear preview and activate camera
-                    setPreview(null)
-                    setSelectedFile(null)
-                    setImageSource(null)
-                    onImageSelect(null)
+            {/* Re-upload / Re-capture buttons - show in BOTH create and edit mode when preview exists */}
+            {preview && !isCameraActive && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
                     setIsCameraActive(true)
-                  } else {
-                    // Re-upload: open file picker
+                    setPreview(null)
+                    if (!isEditMode) {
+                      setSelectedFile(null)
+                      setImageSource(null)
+                      onImageSelect(null)
+                    }
+                  }}
+                  className="btn-hover text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold rounded-lg py-1 lg:py-1.5 min-[1100px]:py-2 px-2 lg:px-3 min-[1100px]:px-4 transition-smooth flex items-center gap-1 min-[1100px]:gap-2"
+                  style={{ 
+                    background: 'var(--accent-blue)', 
+                    color: 'white',
+                    boxShadow: 'var(--shadow-sm)' 
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1.1)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1)'
+                  }}
+                >
+                  <CameraIcon />
+                  Re-capture
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
                     fileInputRef.current?.click()
-                  }
-                }}
-                className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
-                style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
-              >
-                {imageSource === 'camera' ? (
-                  <>
-                    <CameraIcon />
-                    Re-capture
-                  </>
-                ) : (
-                  <>
-                    <RefreshIcon />
-                    Re-upload
-                  </>
-                )}
-              </button>
+                  }}
+                  className="btn-hover text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold rounded-lg py-1 lg:py-1.5 min-[1100px]:py-2 px-2 lg:px-3 min-[1100px]:px-4 transition-smooth flex items-center gap-1 min-[1100px]:gap-2"
+                  style={{ 
+                    background: 'var(--accent-blue)', 
+                    color: 'white',
+                    boxShadow: 'var(--shadow-sm)' 
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1.1)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1)'
+                  }}
+                >
+                  <UploadIcon />
+                  Re-upload
+                </button>
+              </div>
             )}
           </div>
 
@@ -528,39 +561,7 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
                       className="max-w-full max-h-full object-contain"
                       onError={() => setImageError(true)}
                     />
-                    
-                    {/* Show Camera/Upload buttons in edit mode */}
-                    {isEditMode && (
-                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setIsCameraActive(true)
-                            setPreview(null)
-                          }}
-                          className="btn-hover text-white font-semibold rounded-lg py-2 px-5 flex items-center justify-center gap-2 transition-smooth whitespace-nowrap"
-                          style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-lg)' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
-                        >
-                          <CameraIcon />
-                          <span>Re-capture</span>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            fileInputRef.current?.click()
-                          }}
-                          className="btn-hover text-white font-semibold rounded-lg py-2 px-5 flex items-center justify-center gap-2 transition-smooth whitespace-nowrap"
-                          style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-lg)' }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
-                        >
-                          <UploadIcon />
-                          <span>Re-upload</span>
-                        </button>
-                      </div>
-                    )}
+
                   </motion.div>
                 )
               ) : isCameraActive ? (
@@ -600,20 +601,36 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
                     <div className="flex gap-3">
                       <button
                         onClick={() => setIsCameraActive(true)}
-                        className="btn-hover text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
-                        style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
+                        className="btn-hover font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
+                        style={{ 
+                          background: 'var(--accent-blue)', 
+                          color: 'white',
+                          boxShadow: 'var(--shadow-sm)' 
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.filter = 'brightness(1.1)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.filter = 'brightness(1)'
+                        }}
                       >
                         <CameraIcon />
                         <span>Camera</span>
                       </button>
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="btn-hover text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
-                        style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
+                        className="btn-hover font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
+                        style={{ 
+                          background: 'var(--accent-blue)', 
+                          color: 'white',
+                          boxShadow: 'var(--shadow-sm)' 
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.filter = 'brightness(1.1)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.filter = 'brightness(1)'
+                        }}
                       >
                         <UploadIcon />
                         <span>Upload</span>
@@ -636,20 +653,36 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
                       setSelectedFile(true)
                     }
                   }}
-                  className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
-                  style={{ background: '#4b5563', boxShadow: 'var(--shadow-lg)' }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = '#374151'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = '#4b5563'}
+                  className="btn-hover font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
+                  style={{ 
+                    background: '#4b5563', 
+                    color: 'white',
+                    boxShadow: 'var(--shadow-lg)' 
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.filter = 'brightness(0.9)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1)'
+                  }}
                 >
                   <XIcon />
                   Cancel
                 </button>
                 <button
                   onClick={capturePhoto}
-                  className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
-                  style={{ background: '#16a34a', boxShadow: 'var(--shadow-lg)' }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = '#15803d'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = '#16a34a'}
+                  className="btn-hover font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
+                  style={{ 
+                    background: '#16a34a', 
+                    color: 'white',
+                    boxShadow: 'var(--shadow-lg)' 
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1.1)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.filter = 'brightness(1)'
+                  }}
                 >
                   <CameraIcon />
                   Capture
@@ -660,14 +693,14 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
         </div>
 
         {/* RIGHT: Form Section */}
-        <form onSubmit={handleSubmit} className="w-80 flex flex-col">
-          <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+        <form onSubmit={handleSubmit} className="w-full min-[1100px]:w-[35%] min-[1100px]:min-w-[280px] min-[1100px]:max-w-[400px] flex flex-col shrink-0">
+          <h2 className="text-base lg:text-lg min-[1100px]:text-xl font-bold mb-1 lg:mb-2 min-[1100px]:mb-3" style={{ color: 'var(--text-primary)' }}>
             {isEditMode ? 'Update Details' : 'Record Details'}
           </h2>
 
           {/* Name Field */}
-          <div className="mb-3">
-            <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
+          <div className="mb-1 lg:mb-2 min-[1100px]:mb-3">
+            <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>
               Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -676,7 +709,7 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter record name"
-              className="w-full px-4 py-2 rounded-lg border transition-smooth focus:outline-none focus:ring-2"
+              className="w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth focus:outline-none focus:ring-2"
               style={{ 
                 background: 'var(--bg-primary)',
                 borderColor: 'var(--border-primary)',
@@ -703,14 +736,14 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
           </div>
 
           {/* Date Field */}
-          <div className="mb-3">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <div className="mb-1 lg:mb-2 min-[1100px]:mb-3">
+            <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold text-gray-700 mb-1">
               Date <span className="text-red-500">*</span>
             </label>
             <div className="relative" ref={dateDropdownRef}>
               <div
                 onClick={() => selectedFile && setIsDateDropdownOpen(!isDateDropdownOpen)}
-                className={`w-full px-4 py-2 rounded-lg border transition-smooth flex items-center gap-2 ${
+                className={`w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth flex items-center gap-1 lg:gap-2 ${
                   !selectedFile
                     ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -890,14 +923,14 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
           </div>
 
           {/* Time Field */}
-          <div className="mb-3">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <div className="mb-1 lg:mb-2 min-[1100px]:mb-3">
+            <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold text-gray-700 mb-1">
               Time <span className="text-red-500">*</span>
             </label>
             <div className="relative" ref={timeDropdownRef}>
               <div
                 onClick={() => selectedFile && setIsTimeDropdownOpen(!isTimeDropdownOpen)}
-                className={`w-full px-4 py-2 rounded-lg border transition-smooth flex items-center gap-2 ${
+                className={`w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth flex items-center gap-1 lg:gap-2 ${
                   !selectedFile
                     ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
                     : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -912,86 +945,149 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
                   initial={{ opacity: 0, y: -10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute z-50 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl p-4 w-64"
+                  className="absolute z-50 mt-2 rounded-lg shadow-xl p-4 w-72"
+                  style={{
+                    background: 'var(--bg-primary)',
+                    border: '1px solid var(--border-primary)'
+                  }}
                 >
                   <div className="text-center mb-4">
-                    <div className="text-3xl font-bold text-gray-800">
-                      {String(selectedHours).padStart(2, '0')}:{String(selectedMinutes).padStart(2, '0')}
+                    <div className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                      {String(selectedHours).padStart(2, '0')}:{String(selectedMinutes).padStart(2, '0')} {selectedPeriod}
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
+                  <div className="flex gap-3">
                     {/* Hours */}
                     <div className="flex-1">
-                      <div className="text-xs font-semibold text-gray-600 mb-2 text-center">Hours</div>
-                      <div className="h-48 overflow-y-auto overflow-x-hidden border border-gray-200 rounded-lg">
-                        {Array.from({ length: 24 }).map((_, i) => (
-                          <motion.button
-                            key={i}
-                            type="button"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setSelectedHours(i)}
-                            className={`w-full py-2 text-sm transition-all ${
-                              selectedHours === i
-                                ? 'bg-blue-600 text-white font-bold'
-                                : 'hover:bg-gray-100 text-gray-700'
-                            }`}
-                          >
-                            {String(i).padStart(2, '0')}
-                          </motion.button>
-                        ))}
+                      <div className="text-xs font-semibold mb-2 text-center" style={{ color: 'var(--text-secondary)' }}>Hours</div>
+                      <div className="h-48 overflow-y-auto overflow-x-hidden rounded-lg" style={{ border: '1px solid var(--border-primary)' }}>
+                        {Array.from({ length: 12 }).map((_, i) => {
+                          const hour = i === 0 ? 12 : i
+                          return (
+                            <button
+                              key={i}
+                              type="button"
+                              onClick={() => setSelectedHours(hour)}
+                              className="w-full py-2 text-sm transition-all"
+                              style={{
+                                background: selectedHours === hour ? 'var(--accent-blue)' : 'transparent',
+                                color: selectedHours === hour ? 'white' : 'var(--text-primary)',
+                                fontWeight: selectedHours === hour ? 'bold' : 'normal'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (selectedHours !== hour) e.currentTarget.style.background = 'var(--bg-hover)'
+                              }}
+                              onMouseLeave={(e) => {
+                                if (selectedHours !== hour) e.currentTarget.style.background = 'transparent'
+                              }}
+                            >
+                              {String(hour).padStart(2, '0')}
+                            </button>
+                          )
+                        })}
                       </div>
                     </div>
 
                     {/* Minutes */}
                     <div className="flex-1">
-                      <div className="text-xs font-semibold text-gray-600 mb-2 text-center">Minutes</div>
-                      <div className="h-48 overflow-y-auto overflow-x-hidden border border-gray-200 rounded-lg">
+                      <div className="text-xs font-semibold mb-2 text-center" style={{ color: 'var(--text-secondary)' }}>Minutes</div>
+                      <div className="h-48 overflow-y-auto overflow-x-hidden rounded-lg" style={{ border: '1px solid var(--border-primary)' }}>
                         {Array.from({ length: 60 }).map((_, i) => (
-                          <motion.button
+                          <button
                             key={i}
                             type="button"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
                             onClick={() => setSelectedMinutes(i)}
-                            className={`w-full py-2 text-sm transition-all ${
-                              selectedMinutes === i
-                                ? 'bg-blue-600 text-white font-bold'
-                                : 'hover:bg-gray-100 text-gray-700'
-                            }`}
+                            className="w-full py-2 text-sm transition-all"
+                            style={{
+                              background: selectedMinutes === i ? 'var(--accent-blue)' : 'transparent',
+                              color: selectedMinutes === i ? 'white' : 'var(--text-primary)',
+                              fontWeight: selectedMinutes === i ? 'bold' : 'normal'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (selectedMinutes !== i) e.currentTarget.style.background = 'var(--bg-hover)'
+                            }}
+                            onMouseLeave={(e) => {
+                              if (selectedMinutes !== i) e.currentTarget.style.background = 'transparent'
+                            }}
                           >
                             {String(i).padStart(2, '0')}
-                          </motion.button>
+                          </button>
                         ))}
                       </div>
+                    </div>
+
+                    {/* AM/PM */}
+                    <div className="flex flex-col gap-2">
+                      <div className="text-xs font-semibold mb-2 text-center" style={{ color: 'var(--text-secondary)' }}>Period</div>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPeriod('AM')}
+                        className="px-3 py-2 text-sm font-semibold rounded-lg transition-all"
+                        style={{
+                          background: selectedPeriod === 'AM' ? 'var(--accent-blue)' : 'var(--bg-tertiary)',
+                          color: selectedPeriod === 'AM' ? 'white' : 'var(--text-primary)',
+                          border: '1px solid var(--border-primary)'
+                        }}
+                      >
+                        AM
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedPeriod('PM')}
+                        className="px-3 py-2 text-sm font-semibold rounded-lg transition-all"
+                        style={{
+                          background: selectedPeriod === 'PM' ? 'var(--accent-blue)' : 'var(--bg-tertiary)',
+                          color: selectedPeriod === 'PM' ? 'white' : 'var(--text-primary)',
+                          border: '1px solid var(--border-primary)'
+                        }}
+                      >
+                        PM
+                      </button>
                     </div>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="mt-4 pt-3 border-t border-gray-200 flex gap-2">
+                  <div className="mt-4 pt-3 flex gap-2" style={{ borderTop: '1px solid var(--border-primary)' }}>
                     <button
                       type="button"
                       onClick={() => {
                         const now = new Date()
                         const newHours = now.getHours()
                         const newMinutes = now.getMinutes()
-                        setSelectedHours(newHours)
+                        setSelectedHours(newHours % 12 || 12)
                         setSelectedMinutes(newMinutes)
-                        const newTime = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`
-                        handleTimeChange(newTime)
+                        setSelectedPeriod(newHours >= 12 ? 'PM' : 'AM')
+                        const time24 = `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`
+                        handleTimeChange(time24)
                       }}
-                      className="flex-1 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg font-semibold transition-smooth"
+                      className="flex-1 py-2 text-sm font-semibold rounded-lg transition-smooth"
+                      style={{
+                        color: 'var(--text-secondary)',
+                        background: 'var(--bg-secondary)'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'var(--bg-secondary)'}
                     >
                       Now
                     </button>
                     <button
                       type="button"
                       onClick={() => {
-                        const newTime = `${String(selectedHours).padStart(2, '0')}:${String(selectedMinutes).padStart(2, '0')}`
+                        // Convert 12-hour to 24-hour format
+                        let hours24 = selectedHours
+                        if (selectedPeriod === 'PM' && selectedHours !== 12) {
+                          hours24 = selectedHours + 12
+                        } else if (selectedPeriod === 'AM' && selectedHours === 12) {
+                          hours24 = 0
+                        }
+                        const newTime = `${String(hours24).padStart(2, '0')}:${String(selectedMinutes).padStart(2, '0')}`
                         handleTimeChange(newTime)
                       }}
-                      className="flex-1 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold transition-smooth"
+                      className="flex-1 py-2 text-sm text-white font-semibold rounded-lg transition-smooth"
+                      style={{ background: 'var(--accent-blue)' }}
+                      onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}
                     >
                       Done
                     </button>
@@ -1006,7 +1102,12 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-sm text-gray-600 text-center p-3 bg-blue-50 rounded-lg border border-blue-200 mb-3 flex items-center justify-center gap-2"
+              className="text-[11px] lg:text-xs min-[1100px]:text-sm text-center p-2 min-[1100px]:p-3 rounded-lg mb-2 min-[1100px]:mb-3 flex items-center justify-center gap-1 lg:gap-2"
+              style={{
+                color: 'var(--text-secondary)',
+                background: 'var(--bg-secondary)',
+                border: '1px solid var(--border-primary)'
+              }}
             >
               <ImageIcon />
               <span>Upload or capture an image to fill this form</span>
@@ -1014,14 +1115,14 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3 mt-auto">
+          <div className="flex gap-1 lg:gap-2 min-[1100px]:gap-3 mt-auto pt-1 lg:pt-2 min-[1100px]:pt-0">
             <motion.button
               whileHover={selectedFile ? { scale: 1.02 } : {}}
               whileTap={selectedFile ? { scale: 0.98 } : {}}
               type="button"
               onClick={handleCancel}
               disabled={!selectedFile || loading}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-lg py-2 px-4 text-gray-700 font-semibold flex items-center justify-center gap-2"
+              className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-lg py-1 lg:py-1.5 min-[1100px]:py-2 px-2 lg:px-3 min-[1100px]:px-4 text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold flex items-center justify-center gap-1 min-[1100px]:gap-2"
             >
               <MdCancel />
               Cancel
@@ -1031,7 +1132,7 @@ function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit })
               whileTap={!isFormDisabled ? { scale: 0.98 } : {}}
               type="submit"
               disabled={loading || isFormDisabled}
-              className={`flex-1 py-2 px-4 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-smooth ${
+              className={`flex-1 py-1 lg:py-1.5 min-[1100px]:py-2 px-2 lg:px-3 min-[1100px]:px-4 text-white text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold rounded-lg flex items-center justify-center gap-1 min-[1100px]:gap-2 transition-smooth ${
                 isFormDisabled
                   ? 'bg-gray-300 cursor-not-allowed'
                   : 'bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md'
