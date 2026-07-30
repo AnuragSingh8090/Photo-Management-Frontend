@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
 import { MdSave, MdCancel, MdClose } from 'react-icons/md'
 import { saveRecord } from '../services/api'
-import { getCurrentDate, getCurrentTime } from '../utils/dateTime'
+import { getCurrentDate, getCurrentTime, formatTime } from '../utils/dateTime'
 
 // SVG Icons
 const CameraIcon = () => (
@@ -15,7 +15,7 @@ const CameraIcon = () => (
 )
 
 const CameraLargeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
     <circle cx="12" cy="13" r="3"/>
   </svg>
@@ -78,13 +78,14 @@ const XIcon = () => (
  * ImageCapture Component
  * Combined camera/upload section with form fields
  */
-function ImageCapture({ onImageSelect }) {
+function ImageCapture({ onImageSelect, onSuccess, editingRecord, onCancelEdit }) {
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [preview, setPreview] = useState(null)
   const [selectedFile, setSelectedFile] = useState(null)
   const [showFullImage, setShowFullImage] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [imageSource, setImageSource] = useState(null) // 'upload' or 'camera'
+  const [isEditMode, setIsEditMode] = useState(false)
   const webcamRef = useRef(null)
   const fileInputRef = useRef(null)
   const dateDropdownRef = useRef(null)
@@ -121,6 +122,24 @@ function ImageCapture({ onImageSelect }) {
       }))
     }
   }, [selectedFile])
+
+  // Load editing record data
+  useEffect(() => {
+    if (editingRecord) {
+      setIsEditMode(true)
+      setPreview(editingRecord.image)
+      setSelectedFile(true) // Set to true to enable form (we already have image URL)
+      setImageSource('edit')
+      setFormData({
+        name: editingRecord.name,
+        date: editingRecord.date,
+        time: editingRecord.time,
+      })
+      setImageError(false)
+    } else {
+      setIsEditMode(false)
+    }
+  }, [editingRecord])
 
   // Update time every second when disabled
   useEffect(() => {
@@ -179,7 +198,7 @@ function ImageCapture({ onImageSelect }) {
         setImageError(false)
         onImageSelect(file)
         setIsCameraActive(false)
-        toast.success('Photo captured', { autoClose: 1500 })
+        // Removed toast - only show on final save
       }
     }
   }
@@ -202,7 +221,7 @@ function ImageCapture({ onImageSelect }) {
         setImageSource('upload')
         setImageError(false)
         onImageSelect(file)
-        toast.success('Image uploaded', { autoClose: 1500 })
+        // Removed toast - only show on final save
       }
       reader.readAsDataURL(file)
     }
@@ -234,7 +253,8 @@ function ImageCapture({ onImageSelect }) {
       newErrors.name = 'Name is required'
     }
 
-    if (!selectedFile) {
+    // Only require image for new records, not for editing
+    if (!selectedFile && !isEditMode) {
       toast.error('Please capture or upload an image', { autoClose: 1500 })
       return false
     }
@@ -328,19 +348,45 @@ function ImageCapture({ onImageSelect }) {
 
     setLoading(true)
 
+    console.log('=== SUBMIT DEBUG ===')
+    console.log('isEditMode:', isEditMode)
+    console.log('editingRecord:', editingRecord)
+    console.log('selectedFile type:', typeof selectedFile, selectedFile)
+
     try {
-      await saveRecord({
-        name: formData.name,
-        date: formData.date,
-        time: formData.time,
-        image: selectedFile,
-      })
-      toast.success('Record saved', { autoClose: 2000 })
+      if (isEditMode && editingRecord) {
+        console.log('>>> UPDATE MODE - Calling updateRecordWithImage')
+        // Update existing record
+        const { updateRecordWithImage } = await import('../services/api')
+        
+        // Check if a new image was uploaded (File object, not boolean)
+        const hasNewImage = selectedFile && typeof selectedFile !== 'boolean'
+        console.log('hasNewImage:', hasNewImage)
+        
+        await updateRecordWithImage(editingRecord.id, {
+          name: formData.name,
+          date: formData.date,
+          time: formData.time,
+          image: hasNewImage ? selectedFile : null,
+        })
+        toast.success('Record updated successfully', { autoClose: 2000 })
+      } else {
+        console.log('>>> CREATE MODE - Calling saveRecord')
+        // Create new record
+        await saveRecord({
+          name: formData.name,
+          date: formData.date,
+          time: formData.time,
+          image: selectedFile,
+        })
+        toast.success('Record saved successfully', { autoClose: 2000 })
+      }
       
       // Clear form and image
       setPreview(null)
       setSelectedFile(null)
       setImageSource(null)
+      setIsEditMode(false)
       onImageSelect(null)
       setFormData({
         name: '',
@@ -348,6 +394,16 @@ function ImageCapture({ onImageSelect }) {
         time: getCurrentTime(),
       })
       setErrors({})
+      
+      // Clear editing state in parent if in edit mode
+      if (isEditMode && onCancelEdit) {
+        onCancelEdit()
+      }
+      
+      // Trigger refresh of records list
+      if (onSuccess) {
+        onSuccess()
+      }
     } catch (error) {
       console.error('Error submitting form:', error)
       toast.error('Operation failed', { autoClose: 2000 })
@@ -363,6 +419,7 @@ function ImageCapture({ onImageSelect }) {
     setPreview(null)
     setSelectedFile(null)
     setImageSource(null)
+    setIsEditMode(false)
     onImageSelect(null)
     setFormData({
       name: '',
@@ -371,27 +428,28 @@ function ImageCapture({ onImageSelect }) {
     })
     setErrors({})
     setIsCameraActive(false)
+    
+    // Call parent cancel handler if in edit mode
+    if (isEditMode && onCancelEdit) {
+      onCancelEdit()
+    }
   }
 
-  const isFormDisabled = !selectedFile
+  const isFormDisabled = !selectedFile && !isEditMode
 
   return (
     <>
-      <div className="h-full flex gap-4 p-4 rounded-lg bg-white border border-gray-200 shadow-sm overflow-hidden">
+      <div className="h-full flex gap-4 p-4 rounded-lg shadow-sm overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
         {/* LEFT: Camera Section */}
         <div className="flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold text-gray-800">
-              Upload Photo
+            <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+              {isEditMode ? 'Edit Record' : 'Upload Photo'}
             </h2>
             
-            {/* Re-upload or Re-capture button */}
-            {preview && !isCameraActive && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+            {/* Re-upload or Re-capture button - ONLY show when NOT in edit mode */}
+            {preview && !isCameraActive && !isEditMode && (
+              <button
                 onClick={(e) => {
                   e.stopPropagation()
                   if (imageSource === 'camera') {
@@ -406,7 +464,10 @@ function ImageCapture({ onImageSelect }) {
                     fileInputRef.current?.click()
                   }
                 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-2 px-4 transition-smooth shadow-sm hover:shadow-md flex items-center gap-2"
+                className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
+                style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
               >
                 {imageSource === 'camera' ? (
                   <>
@@ -419,12 +480,12 @@ function ImageCapture({ onImageSelect }) {
                     Re-upload
                   </>
                 )}
-              </motion.button>
+              </button>
             )}
           </div>
 
           {/* Preview or Camera */}
-          <div className="flex-1 relative rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex items-center justify-center">
+          <div className="flex-1 relative rounded-lg overflow-hidden flex items-center justify-center" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
             {/* Hidden file input - must be in DOM at all times */}
             <input
               ref={fileInputRef}
@@ -448,7 +509,7 @@ function ImageCapture({ onImageSelect }) {
                     <p className="text-red-600 font-medium text-base mt-6">
                       Unable to display image
                     </p>
-                    <p className="text-gray-500 text-sm mt-2">
+                    <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
                       The image may be corrupted or in an unsupported format
                     </p>
                   </motion.div>
@@ -458,7 +519,7 @@ function ImageCapture({ onImageSelect }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="w-full h-full flex items-center justify-center cursor-pointer"
+                    className="w-full h-full flex items-center justify-center cursor-pointer relative"
                     onClick={() => setShowFullImage(true)}
                   >
                     <img
@@ -467,6 +528,39 @@ function ImageCapture({ onImageSelect }) {
                       className="max-w-full max-h-full object-contain"
                       onError={() => setImageError(true)}
                     />
+                    
+                    {/* Show Camera/Upload buttons in edit mode */}
+                    {isEditMode && (
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setIsCameraActive(true)
+                            setPreview(null)
+                          }}
+                          className="btn-hover text-white font-semibold rounded-lg py-2 px-5 flex items-center justify-center gap-2 transition-smooth whitespace-nowrap"
+                          style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-lg)' }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
+                        >
+                          <CameraIcon />
+                          <span>Re-capture</span>
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            fileInputRef.current?.click()
+                          }}
+                          className="btn-hover text-white font-semibold rounded-lg py-2 px-5 flex items-center justify-center gap-2 transition-smooth whitespace-nowrap"
+                          style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-lg)' }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
+                          onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
+                        >
+                          <UploadIcon />
+                          <span>Re-upload</span>
+                        </button>
+                      </div>
+                    )}
                   </motion.div>
                 )
               ) : isCameraActive ? (
@@ -499,29 +593,31 @@ function ImageCapture({ onImageSelect }) {
                   {/* Buttons in the middle */}
                   <div className="flex flex-col gap-3 items-center">
                     <CameraLargeIcon />
-                    <p className="text-gray-500 text-base mt-6 mb-6">
+                    <p className="text-base mt-6 mb-6" style={{ color: 'var(--text-secondary)' }}>
                       No image selected
                     </p>
                     
                     <div className="flex gap-3">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      <button
                         onClick={() => setIsCameraActive(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth shadow-sm hover:shadow-md"
+                        className="btn-hover text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
+                        style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
                       >
                         <CameraIcon />
                         <span>Camera</span>
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      </button>
+                      <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth shadow-sm hover:shadow-md"
+                        className="btn-hover text-white font-semibold rounded-lg py-2 px-4 flex items-center justify-center gap-2 transition-smooth"
+                        style={{ background: 'var(--accent-blue)', boxShadow: 'var(--shadow-sm)' }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-blue-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-blue)'}
                       >
                         <UploadIcon />
                         <span>Upload</span>
-                      </motion.button>
+                      </button>
                     </div>
                   </div>
                 </motion.div>
@@ -531,24 +627,33 @@ function ImageCapture({ onImageSelect }) {
             {/* Camera Controls - Show when camera is active */}
             {isCameraActive && (
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsCameraActive(false)}
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg py-2 px-4 transition-smooth shadow-lg flex items-center gap-2"
+                <button
+                  onClick={() => {
+                    setIsCameraActive(false)
+                    // If in edit mode and we had a preview from editingRecord, restore it
+                    if (isEditMode && editingRecord?.image) {
+                      setPreview(editingRecord.image)
+                      setSelectedFile(true)
+                    }
+                  }}
+                  className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
+                  style={{ background: '#4b5563', boxShadow: 'var(--shadow-lg)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#374151'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = '#4b5563'}
                 >
                   <XIcon />
                   Cancel
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                </button>
+                <button
                   onClick={capturePhoto}
-                  className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg py-2 px-4 transition-smooth shadow-lg flex items-center gap-2"
+                  className="btn-hover text-white font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center gap-2"
+                  style={{ background: '#16a34a', boxShadow: 'var(--shadow-lg)' }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#15803d'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = '#16a34a'}
                 >
                   <CameraIcon />
                   Capture
-                </motion.button>
+                </button>
               </div>
             )}
           </div>
@@ -556,13 +661,13 @@ function ImageCapture({ onImageSelect }) {
 
         {/* RIGHT: Form Section */}
         <form onSubmit={handleSubmit} className="w-80 flex flex-col">
-          <h2 className="text-xl font-bold text-gray-800 mb-3">
-            Record Details
+          <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+            {isEditMode ? 'Update Details' : 'Record Details'}
           </h2>
 
           {/* Name Field */}
           <div className="mb-3">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-secondary)' }}>
               Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -571,7 +676,20 @@ function ImageCapture({ onImageSelect }) {
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter record name"
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 text-gray-800 transition-smooth focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 rounded-lg border transition-smooth focus:outline-none focus:ring-2"
+              style={{ 
+                background: 'var(--bg-primary)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--text-primary)'
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent-blue)'
+                e.currentTarget.style.boxShadow = '0 0 0 3px var(--accent-blue-light)'
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-primary)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
             />
             {errors.name && (
               <motion.p
@@ -763,7 +881,7 @@ function ImageCapture({ onImageSelect }) {
                       }}
                       className="flex-1 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold transition-smooth"
                     >
-                      Set Date
+                      Done
                     </button>
                   </div>
                 </motion.div>
@@ -786,7 +904,7 @@ function ImageCapture({ onImageSelect }) {
                 }`}
               >
                 <ClockIcon />
-                <span>{selectedFile ? formData.time : '--'}</span>
+                <span>{selectedFile ? formatTime(formData.time) : '--'}</span>
               </div>
               
               {isTimeDropdownOpen && selectedFile && (
@@ -875,7 +993,7 @@ function ImageCapture({ onImageSelect }) {
                       }}
                       className="flex-1 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-semibold transition-smooth"
                     >
-                      Set Time
+                      Done
                     </button>
                   </div>
                 </motion.div>
@@ -920,7 +1038,7 @@ function ImageCapture({ onImageSelect }) {
               }`}
             >
               <MdSave />
-              {loading ? 'Saving...' : 'Save'}
+              {loading ? 'Saving...' : isEditMode ? 'Update' : 'Save'}
             </motion.button>
           </div>
         </form>
