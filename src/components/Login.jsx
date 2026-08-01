@@ -27,7 +27,11 @@ const Login = ({ onLoginSuccess }) => {
         onLoginSuccess(data.expiresAt)
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Invalid key. Access denied.')
+      if (error.code === 'ERR_NETWORK' || !error.response) {
+        toast.error('Failed to connect to server')
+      } else {
+        toast.error(error.response?.data?.message || 'Invalid key. Access denied.')
+      }
     } finally {
       setLoading(false)
     }

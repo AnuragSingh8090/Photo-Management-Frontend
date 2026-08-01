@@ -6,7 +6,7 @@ import RecordsList from './components/RecordsList'
 import ThemeToggle from './components/ThemeToggle'
 import Login from './components/Login'
 import ExpiryTimer from './components/ExpiryTimer'
-import { fetchRecords, verifyAuth, logoutUser } from './services/api'
+import { fetchRecords, verifyAuth, logoutUser, checkHealth } from './services/api'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MdLogout } from 'react-icons/md'
 
@@ -30,7 +30,15 @@ function App() {
 
   // Verify auth on mount
   useEffect(() => {
-    const checkAuth = async () => {
+    const initApp = async () => {
+      try {
+        await checkHealth()
+      } catch (err) {
+        toast.error('Backend not connected')
+        setIsAuthLoading(false)
+        return
+      }
+
       try {
         const data = await verifyAuth()
         if (data.success) {
@@ -43,7 +51,8 @@ function App() {
         setIsAuthLoading(false)
       }
     }
-    checkAuth()
+
+    initApp()
   }, [])
 
   // Security: Logout if localStorage is tampered with or token invalid

@@ -22,6 +22,15 @@ apiClient.interceptors.response.use(
   }
 )
 
+export const checkHealth = async () => {
+  try {
+    const response = await apiClient.get('/health', { timeout: 3000 })
+    return response.data
+  } catch (error) {
+    throw new Error('Backend not connected')
+  }
+}
+
 // --- Auth Endpoints ---
 
 export const loginUser = async (key) => {
