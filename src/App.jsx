@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ImageCapture from './components/ImageCapture'
-import RecordForm from './components/RecordForm'
 import RecordsList from './components/RecordsList'
 import ThemeToggle from './components/ThemeToggle'
-import { fetchRecords } from './services/api'
-import { motion } from 'framer-motion'
+import Login from './components/Login'
+import ExpiryTimer from './components/ExpiryTimer'
+import { fetchRecords, verifyAuth, logoutUser } from './services/api'
+import { motion, AnimatePresence } from 'framer-motion'
+import { MdLogout } from 'react-icons/md'
 
 // Camera SVG Icon
 const CameraHeaderIcon = () => (
@@ -17,16 +19,64 @@ const CameraHeaderIcon = () => (
 )
 
 function App() {
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthLoading, setIsAuthLoading] = useState(true)
+  const [expiryTime, setExpiryTime] = useState(null)
+
   const [records, setRecords] = useState([])
   const [loading, setLoading] = useState(false)
-  const [editingId, setEditingId] = useState(null)
-  const [editingRecord, setEditingRecord] = useState(null)
+  const [viewRecord, setViewRecord] = useState(null)
+  const [editMode, setEditMode] = useState(false)
+
+  // Verify auth on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const data = await verifyAuth()
+        if (data.success) {
+          setIsAuthenticated(true)
+          setExpiryTime(data.expiresAt)
+        }
+      } catch (err) {
+        setIsAuthenticated(false)
+      } finally {
+        setIsAuthLoading(false)
+      }
+    }
+    checkAuth()
+  }, [])
+
+  // Security: Logout if localStorage is tampered with or token invalid
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const handleStorageChange = () => {
+      console.warn("Security Alert: LocalStorage tampered with.");
+      toast.error('Security alert: State modified. Logging out.');
+      handleLogout();
+    };
+
+    const handleAuthError = () => {
+      console.warn("Security Alert: Invalid Token.");
+      toast.error('Session invalid or expired. Logging out.');
+      handleLogout();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('auth_error', handleAuthError);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('auth_error', handleAuthError);
+    }
+  }, [isAuthenticated])
 
   // Load records on component mount
   useEffect(() => {
-    loadRecords()
-  }, [])
+    if (isAuthenticated) {
+      loadRecords()
+    }
+  }, [isAuthenticated])
 
   const loadRecords = async () => {
     setLoading(true)
@@ -35,35 +85,42 @@ function App() {
       setRecords(data)
     } catch (error) {
       console.error(error)
+      if (error.response?.status === 401) {
+        handleLogout()
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const handleImageSelect = (image) => {
-    setSelectedImage(image)
-    setEditingId(null)
-    setEditingRecord(null)
+  const handleLogout = async () => {
+    try {
+      await logoutUser()
+    } catch (e) {
+      console.error(e)
+    }
+    setIsAuthenticated(false)
+    setExpiryTime(null)
   }
 
-  const handleEdit = (record) => {
-    setSelectedImage(null)
-    setEditingId(record.id)
-    setEditingRecord(record)
+  if (isAuthLoading) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    )
   }
 
-  const handleCancel = () => {
-    setSelectedImage(null)
-    setEditingId(null)
-    setEditingRecord(null)
-  }
-
-  const handleSuccess = () => {
-    loadRecords()
-    setSelectedImage(null)
-    setEditingId(null)
-    setEditingRecord(null)
-    toast.success('Done!', { autoClose: 1500 })
+  if (!isAuthenticated) {
+    return (
+      <>
+        <ToastContainer theme="dark" position="top-right" autoClose={2000} hideProgressBar={true} />
+        <Login onLoginSuccess={(expiresAt) => {
+          setIsAuthenticated(true)
+          setExpiryTime(expiresAt)
+        }} />
+      </>
+    )
   }
 
   return (
@@ -80,7 +137,6 @@ function App() {
         pauseOnHover
         theme="light"
         limit={1}
-        
       />
 
       {/* Header */}
@@ -88,13 +144,20 @@ function App() {
         <div className="flex items-center gap-1.5 lg:gap-2 min-[1100px]:gap-3">
           <CameraHeaderIcon />
           <div>
-            <h1 className="text-base lg:text-xl min-[1100px]:text-2xl font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Photo Manager</h1>
-            <p className="text-[10px] lg:text-xs min-[1100px]:text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your photos</p>
+            <h1 className="text-base lg:text-xl min-[1100px]:text-2xl font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Media Manager</h1>
+            <p className="text-[10px] lg:text-xs min-[1100px]:text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your media</p>
           </div>
         </div>
         
-        {/* Theme Toggle */}
-        <div className="scale-75 lg:scale-90 min-[1100px]:scale-100 origin-right">
+        {/* Right Header Actions */}
+        <div className="flex items-center gap-3 lg:gap-6 scale-75 lg:scale-90 min-[1100px]:scale-100 origin-right">
+          <ExpiryTimer 
+            expiresAt={expiryTime} 
+            onExpired={() => {
+              toast.error('Session expired!')
+              handleLogout()
+            }} 
+          />
           <ThemeToggle />
         </div>
       </div>
@@ -109,10 +172,10 @@ function App() {
           className="w-full md:w-[70%] md:flex-1 flex flex-col p-2 lg:p-4 overflow-y-auto"
         >
           <ImageCapture 
-            onImageSelect={handleImageSelect} 
-            onSuccess={loadRecords}
-            editingRecord={editingRecord}
-            onCancelEdit={handleCancel}
+            onSuccess={loadRecords} 
+            viewRecord={viewRecord} 
+            editMode={editMode}
+            onClearView={() => { setViewRecord(null); setEditMode(false); }} 
           />
         </motion.div>
 
@@ -121,14 +184,17 @@ function App() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-full md:w-[30%] md:min-w-[370px] md:max-w-[620px] flex flex-col h-[50vh] md:h-auto"
+          className="w-full md:w-[30%] md:min-w-[370px] md:max-w-[530px] flex flex-col h-[50vh] md:h-auto"
         >
           <RecordsList
             records={records}
-            onEdit={handleEdit}
             onDelete={loadRecords}
             loading={loading}
-            editingId={editingId}
+            onViewRecord={(record) => { setViewRecord(record); setEditMode(false); }}
+            onEditRecord={(record) => { setViewRecord(record); setEditMode(true); }}
+            activeRecordId={viewRecord?.id}
+            editMode={editMode}
+            onCancelEdit={() => { setViewRecord(null); setEditMode(false); }}
           />
         </motion.div>
       </div>

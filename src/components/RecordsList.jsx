@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MdDelete, MdEdit, MdCalendarToday, MdAccessTime } from 'react-icons/md'
+import { MdDelete, MdCalendarToday, MdAccessTime, MdPlayArrow, MdPhotoLibrary, MdEdit, MdClose } from 'react-icons/md'
 import { toast } from 'react-toastify'
 import { deleteRecord, deleteMultipleRecords } from '../services/api'
 import DeleteConfirmModal from './DeleteConfirmModal'
@@ -63,41 +63,117 @@ const ImagePlaceholderIcon = () => (
 )
 
 /**
- * ImageWithPlaceholder Component
- * Shows placeholder while loading or on error
+ * MediaThumbnail Component
+ * Displays the appropriate thumbnail based on media content (photo, video, or group)
  */
-const ImageWithPlaceholder = ({ src, alt }) => {
-  const [imageState, setImageState] = useState('loading') // 'loading', 'loaded', 'error'
+const MediaThumbnail = ({ media }) => {
+  const [imageState, setImageState] = useState('loading')
+  const [duration, setDuration] = useState(null)
+
+  if (!media || media.length === 0) {
+    return (
+      <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center relative" style={{ 
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-primary)'
+      }}>
+        <ImagePlaceholderIcon />
+      </div>
+    )
+  }
+
+  const isMultiple = media.length > 1
+  const firstMedia = media[0]
+  
+  // Choose the front cover (always use the first media item)
+  const coverMedia = firstMedia
 
   return (
-    <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg overflow-hidden flex-shrink-0 relative" style={{ 
-      background: 'var(--bg-secondary)',
-      border: '1px solid var(--border-primary)'
-    }}>
-      {imageState === 'loading' && (
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="animate-pulse">
+    <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg flex-shrink-0 relative">
+      {/* Background stacked cards for multiple media */}
+      {isMultiple && (
+        <>
+          <div className="absolute inset-0 rounded-lg shadow-md translate-x-2 translate-y-2 z-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
+          <div className="absolute inset-0 rounded-lg shadow-md translate-x-1 translate-y-1 z-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
+        </>
+      )}
+
+      {/* Front Card */}
+      <div 
+        className={`absolute inset-0 rounded-lg overflow-hidden z-20 flex items-center justify-center ${
+          isMultiple 
+            ? 'shadow-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500' 
+            : 'shadow-sm'
+        }`}
+        style={!isMultiple ? {
+          background: 'var(--bg-secondary)',
+          border: '1px solid var(--border-primary)'
+        } : undefined}
+      >
+        {imageState === 'loading' && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse">
+              <ImagePlaceholderIcon />
+            </div>
+          </div>
+        )}
+        
+        {imageState === 'error' && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
             <ImagePlaceholderIcon />
           </div>
-        </div>
-      )}
-      
-      {imageState === 'error' && (
-        <div className="w-full h-full flex flex-col items-center justify-center">
-          <ImagePlaceholderIcon />
-          <span className="text-[10px] mt-1" style={{ color: 'var(--text-tertiary)' }}>No Image</span>
-        </div>
-      )}
-      
-      <img
-        src={src}
-        alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
-          imageState === 'loaded' ? 'opacity-100' : 'opacity-0 absolute'
-        }`}
-        onLoad={() => setImageState('loaded')}
-        onError={() => setImageState('error')}
-      />
+        )}
+        
+        {coverMedia.type === 'video' ? (
+          <div className="w-full h-full relative bg-black flex items-center justify-center">
+            <video
+              src={coverMedia.url}
+              className={`w-full h-full object-cover transition-opacity duration-300 ${imageState === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
+              onLoadedMetadata={(e) => {
+                const d = e.currentTarget.duration;
+                if (d && !isNaN(d) && d !== Infinity) {
+                  const mins = Math.floor(d / 60);
+                  const secs = Math.floor(d % 60);
+                  setDuration(`${mins}:${secs.toString().padStart(2, '0')}`);
+                }
+              }}
+              onLoadedData={() => setImageState('loaded')}
+              onError={() => setImageState('error')}
+              preload="metadata"
+              muted
+            />
+            {imageState === 'loaded' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
+                  <MdPlayArrow className="text-gray-800 dark:text-white w-4 h-4 lg:w-5 lg:h-5" />
+                </div>
+              </div>
+            )}
+            {imageState === 'loaded' && duration && (
+              <div className="absolute bottom-1 left-1 px-1 py-0.5 rounded text-[8px] lg:text-[10px] font-bold bg-black/70 text-white z-30">
+                {duration}
+              </div>
+            )}
+          </div>
+        ) : (
+          <img
+            src={coverMedia.url}
+            alt="Thumbnail"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${imageState === 'loaded' ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImageState('loaded')}
+            onError={() => setImageState('error')}
+          />
+        )}
+
+        {/* Group Indicator Badge */}
+        {isMultiple && imageState === 'loaded' && (
+          <div className="absolute top-1 right-1 px-1 py-0.5 rounded text-[8px] lg:text-[10px] font-bold text-white flex items-center gap-0.5"
+            style={{ background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(4px)' }}
+          >
+            <MdPhotoLibrary size={10} />
+            <span>{media.length}</span>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -106,14 +182,13 @@ const ImageWithPlaceholder = ({ src, alt }) => {
  * RecordsList Component
  * Vertical list layout with search and filter
  */
-function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
+function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, activeRecordId, editMode, onCancelEdit }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [sortOrder, setSortOrder] = useState('newest') // 'newest' or 'oldest'
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [recordToDelete, setRecordToDelete] = useState(null)
   const [selectedIds, setSelectedIds] = useState([])
-  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false)
   const [multiDeleteModalOpen, setMultiDeleteModalOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -129,9 +204,7 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isDropdownOpen])
 
   // Filter and sort records
@@ -167,7 +240,6 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
       onDelete()
       const count = selectedIds.length
       setSelectedIds([])
-      setIsMultiSelectMode(false)
       setMultiDeleteModalOpen(false)
       toast.success(`${count} record${count > 1 ? 's' : ''} deleted successfully`, { autoClose: 2000 })
     } catch (error) {
@@ -202,7 +274,7 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
   }
 
   const toggleSelectAll = () => {
-    const selectableRecords = filteredRecords.filter(r => r.id !== editingId)
+    const selectableRecords = filteredRecords
     if (selectedIds.length === selectableRecords.length && selectableRecords.length > 0) {
       setSelectedIds([])
     } else {
@@ -211,7 +283,6 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
   }
 
   const toggleSelect = (id) => {
-    if (id === editingId) return // prevent selecting the editing record
     setSelectedIds(prev => 
       prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
     )
@@ -443,71 +514,79 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
               No records found
             </p>
             <p className="text-[10px] lg:text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
-              {searchTerm ? 'Try a different search' : 'Add your first photo'}
+              {searchTerm ? 'Try a different search' : 'Add your first photo/video'}
             </p>
           </motion.div>
         ) : (
           <div className="space-y-2 p-3">
             <AnimatePresence mode="popLayout">
               {filteredRecords.map((record, index) => {
-                const isEditing = editingId === record.id
                 const isSelected = selectedIds.includes(record.id)
+                const isActiveView = record.id === activeRecordId && !editMode
+                const isActiveEdit = record.id === activeRecordId && editMode
+
                 return (
                 <motion.div
                   key={record.id}
+                  onClick={() => {
+                    if (editMode) {
+                      toast.warning('Please save or cancel your current edits first.', { toastId: 'editModeWarning' })
+                      return
+                    }
+                    onViewRecord && onViewRecord(record)
+                  }}
                   initial={{ opacity: 0, x: 20, scale: 0.95 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -20, scale: 0.95 }}
                   transition={{ duration: 0.3, delay: index * 0.03 }}
-                  className="flex gap-3 p-3 rounded-lg transition-all shadow-sm hover:shadow-md relative group"
+                  className="flex gap-3 p-3 rounded-lg transition-all shadow-sm hover:shadow-md relative group cursor-pointer"
                   style={{
-                    background: isEditing 
-                      ? 'var(--bg-primary)'
-                      : isSelected
+                    background: isSelected || isActiveView || isActiveEdit
                       ? 'var(--accent-blue-light)'
                       : 'var(--bg-primary)',
-                    border: isEditing 
-                      ? '2px dashed var(--accent-blue)'
-                      : isSelected
-                      ? '2px solid var(--accent-blue)'
-                      : '2px solid transparent',
-                    ...(isEditing && { boxShadow: '0 0 0 2px var(--accent-blue-light)' })
+                    border: isActiveEdit
+                      ? '2px dotted var(--accent-blue)'
+                      : (isSelected || isActiveView)
+                        ? '2px solid var(--accent-blue)'
+                        : '2px solid transparent'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isSelected && !isEditing) {
+                    if (!isSelected && !isActiveView && !isActiveEdit) {
                       e.currentTarget.style.background = 'var(--bg-hover)'
                     }
                   }}
                   onMouseLeave={(e) => {
-                    if (!isSelected && !isEditing) {
+                    if (!isSelected && !isActiveView && !isActiveEdit) {
                       e.currentTarget.style.background = 'var(--bg-primary)'
                     }
                   }}
                 >
-                  {/* Checkbox - shows on hover or when selected, HIDDEN when editing */}
-                  {!isEditing && (
-                    <div 
-                      className={`absolute top-2 left-2 z-10 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => toggleSelect(record.id)}
-                        className="w-5 h-5 cursor-pointer"
-                        style={{ 
-                          accentColor: 'var(--accent-blue)',
-                          borderRadius: '6px'
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
+                  {/* Status Indicator for Edit Mode */}
+                  {isActiveEdit && (
+                    <div className="absolute top-0 right-0 -mt-2 -mr-2 bg-yellow-500 text-white rounded-full p-1 shadow-md z-30" title="Currently Editing">
+                      <MdEdit size={12} />
                     </div>
                   )}
 
+                  {/* Checkbox - shows on hover or when selected */}
+                  <div 
+                    className={`absolute top-2 left-2 z-30 ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} transition-opacity`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleSelect(record.id)}
+                      className="w-5 h-5 cursor-pointer shadow-md bg-white border border-gray-300"
+                      style={{ 
+                        accentColor: 'var(--accent-blue)',
+                        borderRadius: '6px'
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+
                   {/* Thumbnail */}
-                  <ImageWithPlaceholder 
-                    src={record.image} 
-                    alt={record.name}
-                  />
+                  <MediaThumbnail media={record.media} />
 
                   {/* Details */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
@@ -530,45 +609,85 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
                     </div>
                   </div>
 
-                  {/* Actions - hide when checkbox is visible or when editing */}
-                  {!isSelected && !isEditing && (
-                    <div className="flex flex-col gap-1 lg:gap-2 flex-shrink-0">
-                      <button
-                        onClick={() => onEdit(record)}
-                        className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
-                        style={{ 
-                          color: '#3b82f6',
-                          border: '1px solid #3b82f6',
-                          background: 'transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                        }}
-                        title="Edit"
-                      >
-                        <MdEdit className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                      </button>
-                      <button
-                        onClick={() => openDeleteModal(record)}
-                        className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
-                        style={{ 
-                          color: '#dc2626',
-                          border: '1px solid #dc2626',
-                          background: 'transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(220, 38, 38, 0.1)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                        }}
-                        title="Delete"
-                      >
-                        <MdDelete className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                      </button>
+                  {/* Actions - hide when checkbox is visible */}
+                  {!isSelected && (
+                    <div className="flex flex-col justify-center gap-1 lg:gap-2 flex-shrink-0 z-30">
+                      {isActiveEdit ? (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onCancelEdit && onCancelEdit()
+                          }}
+                          className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                          style={{ 
+                            color: '#dc2626',
+                            border: '1px solid #dc2626',
+                            background: 'transparent'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(220, 38, 38, 0.1)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent'
+                          }}
+                          title="Cancel Edit"
+                        >
+                          <MdClose className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              if (editMode && record.id !== activeRecordId) {
+                                toast.warning('Please save or cancel your current edits first.', { toastId: 'editModeWarning' })
+                                return
+                              }
+                              onEditRecord && onEditRecord(record)
+                            }}
+                            className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                            style={{ 
+                              color: 'var(--accent-blue)',
+                              border: '1px solid var(--accent-blue)',
+                              background: 'transparent'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'var(--accent-blue-light)'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent'
+                            }}
+                            title="Edit"
+                          >
+                            <MdEdit className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              if (editMode) {
+                                toast.warning('Please save or cancel your current edits first.', { toastId: 'editModeWarning' })
+                                return
+                              }
+                              openDeleteModal(record)
+                            }}
+                            className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                            style={{ 
+                              color: '#dc2626',
+                              border: '1px solid #dc2626',
+                              background: 'transparent'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'rgba(220, 38, 38, 0.1)'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent'
+                            }}
+                            title="Delete"
+                          >
+                            <MdDelete className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                          </button>
+                        </>
+                      )}
                     </div>
                   )}
                 </motion.div>
@@ -582,7 +701,7 @@ function RecordsList({ records, onEdit, onDelete, loading, editingId }) {
       {/* Delete Confirmation Modal */}
       <DeleteConfirmModal
         isOpen={deleteModalOpen}
-        onConfirm={() => handleDelete(recordToDelete.id)}
+        onConfirm={() => handleDelete(recordToDelete?.id)}
         onCancel={closeDeleteModal}
         recordName={recordToDelete?.name}
       />

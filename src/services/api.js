@@ -1,33 +1,79 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+const API_BASE_URL = 'http://localhost:5000/api'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
+// Global interceptor for security token issues
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Broadcast an event so the app can log the user out
+      window.dispatchEvent(new Event('auth_error'))
+    }
+    return Promise.reject(error)
+  }
+)
+
+// --- Auth Endpoints ---
+
+export const loginUser = async (key) => {
+  const response = await apiClient.post('/auth/login', { key })
+  return response.data
+}
+
+export const verifyAuth = async () => {
+  const response = await apiClient.get('/auth/verify')
+  return response.data
+}
+
+export const logoutUser = async () => {
+  const response = await apiClient.post('/auth/logout')
+  return response.data
+}
+
+// --- Data Endpoints ---
+
 /**
  * Transform backend record to frontend format
  */
 const transformRecord = (backendRecord) => {
-  // Backend: { id, title, description, dateTime, imageUrl, createdAt, updatedAt }
-  // Frontend: { id, name, date, time, image, description }
-  
   // Remove the 'Z' to treat as local time, not UTC
   const dateTimeStr = backendRecord.dateTime.replace('Z', '')
-  const dateTime = new Date(dateTimeStr)
   const date = dateTimeStr.split('T')[0] // YYYY-MM-DD
   const time = dateTimeStr.split('T')[1].substring(0, 5) // HH:MM
+  
+  // Build media array from mediaUrls
+  const media = (backendRecord.mediaUrls || []).map(m => ({
+    url: `http://localhost:5000${m.url}`,
+    type: m.type,
+    fileName: m.fileName,
+    originalName: m.originalName
+  }))
+
+  // Backward compat: if no mediaUrls but has imageUrl
+  if (media.length === 0 && backendRecord.imageUrl) {
+    media.push({
+      url: `http://localhost:5000${backendRecord.imageUrl}`,
+      type: 'image',
+      fileName: '',
+      originalName: ''
+    })
+  }
   
   return {
     id: backendRecord.id,
     name: backendRecord.title,
     date: date,
     time: time,
-    image: `http://localhost:5000${backendRecord.imageUrl}`,
+    media: media,
     description: backendRecord.description || ''
   }
 }
@@ -38,9 +84,7 @@ const transformRecord = (backendRecord) => {
 export const fetchRecords = async () => {
   try {
     const response = await apiClient.get('/records')
-    // API returns { data: [...], message: "...", count: ... }
     const records = response.data.data || []
-    // Transform backend format to frontend format
     return records.map(transformRecord)
   } catch (error) {
     console.error('Error fetching records:', error)
@@ -49,26 +93,29 @@ export const fetchRecords = async () => {
 }
 
 /**
- * Save a new record with image
- * @param {Object} record - { name, date, time, image (File) }
+ * Save a new record with multiple media files
+ * @param {Object} record - { name, date, time, description, files: File[] }
  */
 export const saveRecord = async (record) => {
   try {
     const formData = new FormData()
-    // Backend expects 'title' not 'name'
     formData.append('title', record.name)
-    // Backend expects 'dateTime' - send without Z to keep local time
     const dateTime = `${record.date}T${record.time}:00.000`
     formData.append('dateTime', dateTime)
     formData.append('description', record.description || '')
-    formData.append('image', record.image)
+    
+    // Append multiple files
+    if (record.files && record.files.length > 0) {
+      record.files.forEach(file => {
+        formData.append('media', file)
+      })
+    }
 
-    const response = await axios.post(`${API_BASE_URL}/records`, formData, {
+    const response = await apiClient.post(`/records`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
-    // API returns { data: {...}, message: "..." }
     return response.data.data || response.data
   } catch (error) {
     console.error('Error saving record:', error)
@@ -77,13 +124,12 @@ export const saveRecord = async (record) => {
 }
 
 /**
- * Update an existing record
+ * Update an existing record (text fields only)
  * @param {string} id - Record ID
  * @param {Object} record - { name, date, time, description }
  */
 export const updateRecord = async (id, record) => {
   try {
-    // Transform frontend fields to backend fields
     const updateData = {
       title: record.name,
       dateTime: `${record.date}T${record.time}:00.000`,
@@ -91,7 +137,6 @@ export const updateRecord = async (id, record) => {
     }
     
     const response = await apiClient.put(`/records/${id}`, updateData)
-    // API returns { data: {...}, message: "..." }
     return response.data.data || response.data
   } catch (error) {
     console.error('Error updating record:', error)
@@ -100,34 +145,38 @@ export const updateRecord = async (id, record) => {
 }
 
 /**
- * Update an existing record with optional image
- * @param {string} id - Record ID
- * @param {Object} record - { name, date, time, image (File or null), description }
+ * Add a single media file to an existing record
+ * @param {string} recordId - Record ID
+ * @param {File} file - The file to add
  */
-export const updateRecordWithImage = async (id, record) => {
+export const addMediaToRecord = async (recordId, file) => {
   try {
     const formData = new FormData()
-    // Backend expects 'title' not 'name'
-    formData.append('title', record.name)
-    // Backend expects 'dateTime' - send without Z to keep local time
-    const dateTime = `${record.date}T${record.time}:00.000`
-    formData.append('dateTime', dateTime)
-    formData.append('description', record.description || '')
-    
-    // Only append image if a new one was selected
-    if (record.image) {
-      formData.append('image', record.image)
-    }
+    formData.append('media', file)
 
-    const response = await axios.put(`${API_BASE_URL}/records/${id}`, formData, {
+    const response = await apiClient.post(`/records/${recordId}/media`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
-    // API returns { data: {...}, message: "..." }
     return response.data.data || response.data
   } catch (error) {
-    console.error('Error updating record with image:', error)
+    console.error('Error adding media to record:', error)
+    throw error
+  }
+}
+
+/**
+ * Delete a single media file from a record
+ * @param {string} recordId - Record ID
+ * @param {string} fileName - The file name to delete
+ */
+export const deleteMediaFromRecord = async (recordId, fileName) => {
+  try {
+    const response = await apiClient.delete(`/records/${recordId}/media/${encodeURIComponent(fileName)}`)
+    return response.data.data || response.data
+  } catch (error) {
+    console.error('Error deleting media from record:', error)
     throw error
   }
 }
