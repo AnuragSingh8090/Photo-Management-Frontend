@@ -45,10 +45,12 @@ const ExpiryTimer = ({ expiresAt, onExpired }) => {
   return (
     <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/10 border border-red-500/20 rounded-lg shadow-inner">
       <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+      <span className="text-sm text-gray-700 dark:text-gray-300 font-medium whitespace-nowrap">
+        Key expires in
+      </span>
       <span className="text-red-600 dark:text-red-400 font-mono font-bold text-sm">
         {timeLeft}
       </span>
-      <span className="text-xs text-gray-500 dark:text-gray-400 font-medium ml-1">left</span>
     </div>
   )
 }
