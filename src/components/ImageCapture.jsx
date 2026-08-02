@@ -9,21 +9,21 @@ import DeleteConfirmModal from './DeleteConfirmModal'
 
 // SVG Icons
 const CameraIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 md:w-4 md:h-4 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
     <circle cx="12" cy="13" r="3"/>
   </svg>
 )
 
 const CameraLargeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 lg:w-12 lg:h-12 min-[1100px]:w-16 min-[1100px]:h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 md:w-10 md:h-10 xl:w-16 xl:h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
     <circle cx="12" cy="13" r="3"/>
   </svg>
 )
 
 const UploadIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 md:w-4 md:h-4 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
     <polyline points="17 8 12 3 7 8"/>
     <line x1="12" y1="3" x2="12" y2="15"/>
@@ -31,7 +31,7 @@ const UploadIcon = () => (
 )
 
 const ImageIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 md:w-4 md:h-4 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
     <circle cx="8.5" cy="8.5" r="1.5"/>
     <polyline points="21 15 16 10 5 21"/>
@@ -39,7 +39,7 @@ const ImageIcon = () => (
 )
 
 const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 lg:w-3.5 lg:h-3.5 min-[1100px]:w-4 min-[1100px]:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 md:w-3.5 md:h-3.5 xl:w-4 xl:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
     <line x1="16" y1="2" x2="16" y2="6"/>
     <line x1="8" y1="2" x2="8" y2="6"/>
@@ -48,14 +48,14 @@ const CalendarIcon = () => (
 )
 
 const ClockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 lg:w-3.5 lg:h-3.5 min-[1100px]:w-4 min-[1100px]:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 md:w-3.5 md:h-3.5 xl:w-4 xl:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12 6 12 12 16 14"/>
   </svg>
 )
 
 const XIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-4 lg:h-4 min-[1100px]:w-5 min-[1100px]:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 md:w-4 md:h-4 xl:w-5 xl:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="18" y1="6" x2="6" y2="18"/>
     <line x1="6" y1="6" x2="18" y2="18"/>
   </svg>
@@ -664,10 +664,10 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
   return (
     <>
-      <div className="h-full flex flex-col min-[1100px]:flex-row gap-3 min-[1100px]:gap-4 p-3 min-[1100px]:p-4 rounded-lg shadow-sm overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
+      <div className="h-full flex flex-col md:flex-row gap-2 md:gap-3 xl:gap-4 p-2 md:p-3 xl:p-4 rounded-lg shadow-sm overflow-y-auto md:overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
         
         {/* LEFT: Main Display Area (Camera / Upload / Preview) */}
-        <div className="flex-1 relative rounded-lg overflow-hidden flex flex-col" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
+        <div className="h-[250px] md:h-auto md:flex-1 relative rounded-lg overflow-hidden flex flex-col shrink-0" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
           {/* Hidden file input */}
           <input
             ref={fileInputRef}
@@ -797,16 +797,16 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                       <MdClose size={20} />
                     </button>
                   )}
-                  <div className="flex flex-col gap-3 items-center">
+                  <div className="flex flex-col gap-2 md:gap-3 items-center">
                     <CameraLargeIcon />
-                    <p className="text-base mt-6 mb-6" style={{ color: 'var(--text-secondary)' }}>
+                    <p className="text-xs md:text-sm xl:text-base mt-2 md:mt-6 mb-2 md:mb-6" style={{ color: 'var(--text-secondary)' }}>
                       {hasMedia ? 'Add more media' : 'No media selected'}
                     </p>
                     
-                    <div className="flex gap-3">
+                    <div className="flex gap-2 md:gap-3">
                       <button
                         onClick={() => setIsCameraActive(true)}
-                        className="btn-hover font-semibold rounded-lg py-2 px-6 flex items-center justify-center gap-2 transition-smooth min-w-[120px]"
+                        className="btn-hover font-semibold rounded-lg py-1.5 md:py-2 px-3 md:px-6 flex items-center justify-center gap-1.5 md:gap-2 transition-smooth min-w-[90px] md:min-w-[120px] text-xs md:text-sm"
                         style={{ 
                           background: 'var(--accent-blue)', 
                           color: 'white',
@@ -820,7 +820,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                       </button>
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="btn-hover font-semibold rounded-lg py-2 px-6 flex items-center justify-center gap-2 transition-smooth min-w-[120px]"
+                        className="btn-hover font-semibold rounded-lg py-1.5 md:py-2 px-3 md:px-6 flex items-center justify-center gap-1.5 md:gap-2 transition-smooth min-w-[90px] md:min-w-[120px] text-xs md:text-sm"
                         style={{ 
                           background: 'var(--accent-blue)', 
                           color: 'white',
@@ -893,17 +893,17 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
           </AnimatePresence>
         </div>
 
-        <div className="w-full min-[1100px]:w-[35%] min-[1100px]:min-w-[280px] min-[1100px]:max-w-[350px] flex flex-col shrink-0 overflow-hidden h-full">
+        <div className="w-full md:w-[35%] md:min-w-[240px] md:max-w-[350px] flex flex-col shrink-0 overflow-hidden md:h-full">
           
           <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
             <div className="shrink-0">
-              <h2 className="text-base lg:text-lg min-[1100px]:text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+              <h2 className="text-sm md:text-base lg:text-lg xl:text-xl font-bold mb-2 md:mb-3" style={{ color: 'var(--text-primary)' }}>
               Record Details
             </h2>
 
             {/* Name Field */}
             <div className="mb-3">
-              <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>
+              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>
                 Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -913,7 +913,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                 onChange={handleChange}
                 placeholder="Enter record name"
                 disabled={isViewMode}
-                className={`w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth focus:outline-none focus:ring-2 ${isViewMode ? 'opacity-80 cursor-not-allowed bg-gray-100' : ''}`}
+                className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth focus:outline-none focus:ring-2 ${isViewMode ? 'opacity-80 cursor-not-allowed bg-gray-100' : ''}`}
                 style={{ 
                   background: isViewMode ? 'var(--bg-secondary)' : 'var(--bg-primary)',
                   borderColor: 'var(--border-primary)',
@@ -941,13 +941,13 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
             {/* Date Field */}
             <div className="mb-3">
-              <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold text-gray-700 mb-1">
                 Date <span className="text-red-500">*</span>
               </label>
               <div className="relative" ref={dateDropdownRef}>
                 <div
                   onClick={() => hasMedia && !isViewMode && setIsDateDropdownOpen(!isDateDropdownOpen)}
-                  className={`w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth flex items-center gap-1 lg:gap-2 ${
+                  className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth flex items-center gap-1 md:gap-2 ${
                     !hasMedia || isViewMode
                       ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed opacity-80'
                       : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -1126,13 +1126,13 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
             {/* Time Field */}
             <div className="mb-3">
-              <label className="block text-[11px] lg:text-xs min-[1100px]:text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold text-gray-700 mb-1">
                 Time <span className="text-red-500">*</span>
               </label>
               <div className="relative" ref={timeDropdownRef}>
                 <div
                   onClick={() => hasMedia && !isViewMode && setIsTimeDropdownOpen(!isTimeDropdownOpen)}
-                  className={`w-full px-2 py-1 lg:px-3 lg:py-1.5 min-[1100px]:px-4 min-[1100px]:py-2 text-xs lg:text-sm min-[1100px]:text-base rounded-lg border transition-smooth flex items-center gap-1 lg:gap-2 ${
+                  className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth flex items-center gap-1 md:gap-2 ${
                     !hasMedia || isViewMode
                       ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed opacity-80'
                       : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -1427,14 +1427,14 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
           </div>
 
           {/* Action Buttons at bottom */}
-          <div className="shrink-0 flex gap-1 lg:gap-2 min-[1100px]:gap-3 mt-2 pt-3 border-t border-gray-200">
+          <div className="shrink-0 flex gap-1 md:gap-2 xl:gap-3 mt-2 pt-2 md:pt-3 border-t border-gray-200 sticky bottom-0 pb-1 md:pb-0 md:static" style={{ background: 'var(--bg-primary)' }}>
             {isViewMode ? (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 onClick={handleCancel}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 transition-smooth rounded-lg py-2.5 lg:py-3 px-3 text-xs lg:text-sm min-[1100px]:text-base font-semibold flex items-center justify-center gap-1 min-[1100px]:gap-2 text-gray-800"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 transition-smooth rounded-lg py-2 md:py-2.5 lg:py-3 px-3 text-xs md:text-sm xl:text-base font-semibold flex items-center justify-center gap-1 xl:gap-2 text-gray-800"
               >
                 <MdCancel />
                 Cancel
@@ -1447,7 +1447,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   type="button"
                   onClick={handleCancel}
                   disabled={!hasMedia || loading}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-lg py-2.5 lg:py-3 px-3 text-xs lg:text-sm min-[1100px]:text-base font-semibold flex items-center justify-center gap-1 min-[1100px]:gap-2"
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-lg py-2 md:py-2.5 lg:py-3 px-3 text-xs md:text-sm xl:text-base font-semibold flex items-center justify-center gap-1 xl:gap-2"
                 >
                   <MdCancel />
                   Cancel
@@ -1457,7 +1457,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   whileTap={!isFormDisabled ? { scale: 0.98 } : {}}
                   type="submit"
                   disabled={loading || isFormDisabled}
-                  className={`flex-1 py-2.5 lg:py-3 px-3 text-white text-xs lg:text-sm min-[1100px]:text-base font-semibold rounded-lg flex items-center justify-center gap-1 min-[1100px]:gap-2 transition-smooth ${
+                  className={`flex-1 py-2 md:py-2.5 lg:py-3 px-3 text-white text-xs md:text-sm xl:text-base font-semibold rounded-lg flex items-center justify-center gap-1 xl:gap-2 transition-smooth ${
                     isFormDisabled
                       ? 'bg-gray-300 cursor-not-allowed'
                       : 'bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md'

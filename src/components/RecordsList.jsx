@@ -15,7 +15,7 @@ const SearchIcon = () => (
 )
 
 const EmptyIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 lg:w-16 lg:h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
     <circle cx="8.5" cy="8.5" r="1.5"/>
     <polyline points="21 15 16 10 5 21"/>
@@ -55,7 +55,7 @@ const CheckIcon = () => (
 )
 
 const ImagePlaceholderIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 lg:w-8 lg:h-8" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" style={{ color: 'var(--text-tertiary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
     <circle cx="8.5" cy="8.5" r="1.5"/>
     <polyline points="21 15 16 10 5 21"/>
@@ -72,7 +72,7 @@ const MediaThumbnail = ({ media }) => {
 
   if (!media || media.length === 0) {
     return (
-      <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center relative" style={{ 
+      <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center relative" style={{ 
         background: 'var(--bg-secondary)',
         border: '1px solid var(--border-primary)'
       }}>
@@ -88,7 +88,7 @@ const MediaThumbnail = ({ media }) => {
   const coverMedia = firstMedia
 
   return (
-    <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg flex-shrink-0 relative">
+    <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg flex-shrink-0 relative">
       {/* Background stacked cards for multiple media */}
       {isMultiple && (
         <>
@@ -143,8 +143,8 @@ const MediaThumbnail = ({ media }) => {
             />
             {imageState === 'loaded' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                <div className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
-                  <MdPlayArrow className="text-gray-800 dark:text-white w-4 h-4 lg:w-5 lg:h-5" />
+                <div className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
+                  <MdPlayArrow className="text-gray-800 dark:text-white w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5" />
                 </div>
               </div>
             )}
@@ -166,10 +166,10 @@ const MediaThumbnail = ({ media }) => {
 
         {/* Group Indicator Badge */}
         {isMultiple && imageState === 'loaded' && (
-          <div className="absolute top-1 right-1 px-1 py-0.5 rounded text-[8px] lg:text-[10px] font-bold text-white flex items-center gap-0.5"
+          <div className="absolute top-0.5 right-0.5 md:top-1 md:right-1 px-1 py-0.5 rounded text-[7px] md:text-[8px] lg:text-[10px] font-bold text-white flex items-center gap-0.5"
             style={{ background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(4px)' }}
           >
-            <MdPhotoLibrary size={10} />
+            <MdPhotoLibrary className="w-2 h-2 md:w-2.5 md:h-2.5 lg:w-[10px] lg:h-[10px]" />
             <span>{media.length}</span>
           </div>
         )}
@@ -302,7 +302,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
         border: '1px solid var(--border-primary)'
       }}
     >
-      <div className="w-12 h-12 lg:w-20 lg:h-20 rounded-lg animate-pulse flex-shrink-0" style={{ background: 'var(--bg-tertiary)' }} />
+      <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg animate-pulse flex-shrink-0" style={{ background: 'var(--bg-tertiary)' }} />
       <div className="flex-1 space-y-2">
         <div className="h-4 rounded animate-pulse w-3/4" style={{ background: 'var(--bg-tertiary)' }} />
         <div className="h-3 rounded animate-pulse w-1/2" style={{ background: 'var(--bg-tertiary)' }} />
@@ -323,10 +323,10 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
       }}
     >
       {/* Header */}
-      <div className="px-2 py-1.5 lg:px-4 lg:py-3 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
-        <div className="flex items-center justify-between mb-1 lg:mb-2.5">
-          <div className="flex items-center gap-1.5 lg:gap-2">
-            <h2 className="text-base lg:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+      <div className="px-2 py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-3 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
+        <div className="flex items-center justify-between mb-1 md:mb-1.5 lg:mb-2.5">
+          <div className="flex items-center gap-1 md:gap-1.5 lg:gap-2">
+            <h2 className="text-sm md:text-base lg:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
               Records
             </h2>
             {!loading && records.length > 0 && (
@@ -345,7 +345,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="btn-hover flex items-center gap-1.5 lg:gap-2 px-2 py-1 lg:px-3 lg:py-1.5 rounded-lg transition-smooth text-[11px] lg:text-sm"
+              className="btn-hover flex items-center gap-1 md:gap-1.5 lg:gap-2 px-1.5 md:px-2 md:py-1 lg:px-3 lg:py-1.5 rounded-lg transition-smooth text-[10px] md:text-[11px] lg:text-sm"
               style={{
                 background: 'var(--bg-secondary)',
                 border: '1px solid var(--border-primary)',
@@ -428,10 +428,10 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
         </div>
 
         {/* Multi-select and Search Row */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           {/* Select All Checkbox - Icon Only */}
           <label 
-            className="flex items-center justify-center cursor-pointer w-9 h-9 rounded-lg transition-smooth" 
+            className="flex items-center justify-center cursor-pointer w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-lg transition-smooth" 
             style={{ 
               userSelect: 'none',
               background: 'transparent'
@@ -444,7 +444,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
               type="checkbox"
               checked={isAllSelected}
               onChange={toggleSelectAll}
-              className="w-5 h-5 cursor-pointer"
+              className="w-4 h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 cursor-pointer"
               style={{ 
                 accentColor: 'var(--accent-blue)',
                 borderRadius: '6px'
@@ -460,7 +460,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
               placeholder="Search records..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-8 pr-2 py-1 lg:pl-10 lg:pr-3 lg:py-2 rounded-lg text-[11px] lg:text-sm focus:outline-none transition-smooth"
+              className="w-full pl-6 pr-2 py-1 md:pl-7 md:py-1.5 lg:pl-10 lg:pr-3 lg:py-2 rounded-lg text-[10px] md:text-[11px] lg:text-sm focus:outline-none transition-smooth"
               style={{
                 background: 'var(--bg-primary)',
                 border: '1px solid var(--border-primary)',
@@ -481,7 +481,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
           <button
             onClick={openMultiDeleteModal}
             disabled={selectedIds.length === 0}
-            className="btn-hover p-2 rounded-lg transition-smooth border"
+            className="btn-hover p-1.5 md:p-2 lg:p-2.5 rounded-lg transition-smooth border flex items-center justify-center"
             style={{
               background: selectedIds.length > 0 ? '#dc2626' : 'var(--bg-tertiary)',
               borderColor: selectedIds.length > 0 ? '#dc2626' : 'var(--border-primary)',
@@ -490,7 +490,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
             }}
             title={selectedIds.length > 0 ? `Delete ${selectedIds.length} selected` : 'Select items to delete'}
           >
-            <MdDelete size={20} />
+            <MdDelete className="w-4 h-4 md:w-4 md:h-4 lg:w-5 lg:h-5" />
           </button>
         </div>
       </div>
@@ -539,7 +539,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -20, scale: 0.95 }}
                   transition={{ duration: 0.3, delay: index * 0.03 }}
-                  className="flex gap-3 p-3 rounded-lg transition-all shadow-sm hover:shadow-md relative group cursor-pointer"
+                  className="flex gap-2 md:gap-2.5 lg:gap-3 p-2 md:p-2.5 lg:p-3 rounded-lg transition-all shadow-sm hover:shadow-md relative group cursor-pointer"
                   style={{
                     background: isSelected || isActiveView || isActiveEdit
                       ? 'var(--accent-blue-light)'
@@ -591,20 +591,20 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   {/* Details */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <h3 
-                      className="text-[11px] lg:text-base font-bold mb-1 lg:mb-1.5 line-clamp-2"
+                      className="text-[11px] md:text-xs lg:text-base font-bold mb-0.5 md:mb-1 lg:mb-1.5 line-clamp-2"
                       style={{ color: 'var(--text-primary)' }}
                       title={record.name}
                     >
                       {record.name}
                     </h3>
-                    <div className="space-y-0.5 lg:space-y-1">
-                      <div className="flex items-center gap-1 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
-                        <MdCalendarToday className="w-3 h-3 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
-                        <span className="text-[9px] lg:text-sm font-medium">{record.date}</span>
+                    <div className="space-y-0.5 md:space-y-1 lg:space-y-1">
+                      <div className="flex items-center gap-1 md:gap-1.5 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
+                        <MdCalendarToday className="w-3 h-3 md:w-3.5 md:h-3.5 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
+                        <span className="text-[9px] md:text-[10px] lg:text-sm font-medium">{record.date}</span>
                       </div>
-                      <div className="flex items-center gap-1 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
-                        <MdAccessTime className="w-3 h-3 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
-                        <span className="text-[9px] lg:text-sm font-medium">{formatTime(record.time)}</span>
+                      <div className="flex items-center gap-1 md:gap-1.5 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
+                        <MdAccessTime className="w-3 h-3 md:w-3.5 md:h-3.5 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
+                        <span className="text-[9px] md:text-[10px] lg:text-sm font-medium">{formatTime(record.time)}</span>
                       </div>
                     </div>
                   </div>
@@ -645,7 +645,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                               }
                               onEditRecord && onEditRecord(record)
                             }}
-                            className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                            className="btn-hover p-1.5 md:p-1.5 lg:p-2 rounded-lg transition-smooth"
                             style={{ 
                               color: 'var(--accent-blue)',
                               border: '1px solid var(--accent-blue)',
