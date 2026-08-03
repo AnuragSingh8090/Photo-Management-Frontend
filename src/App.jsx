@@ -19,7 +19,7 @@ const CameraHeaderIcon = () => (
 )
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
   const [expiryTime, setExpiryTime] = useState(null)
 
