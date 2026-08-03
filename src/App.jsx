@@ -13,13 +13,13 @@ import { MdLogout } from 'react-icons/md'
 // Camera SVG Icon
 const CameraHeaderIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 md:w-7 md:h-7 xl:w-9 xl:h-9" style={{ color: 'var(--text-primary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-    <circle cx="12" cy="13" r="3"/>
+    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+    <circle cx="12" cy="13" r="3" />
   </svg>
 )
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [isAuthLoading, setIsAuthLoading] = useState(true)
   const [expiryTime, setExpiryTime] = useState(null)
 
@@ -73,7 +73,7 @@ function App() {
 
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('auth_error', handleAuthError);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('auth_error', handleAuthError);
@@ -157,15 +157,15 @@ function App() {
             <p className="text-[9px] md:text-[10px] lg:text-xs xl:text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your media</p>
           </div>
         </div>
-        
+
         {/* Right Header Actions */}
         <div className="flex items-center gap-2 md:gap-3 min-[1100px]:gap-6 scale-[0.7] md:scale-75 min-[1100px]:scale-100 origin-right">
-          <ExpiryTimer 
-            expiresAt={expiryTime} 
+          <ExpiryTimer
+            expiresAt={expiryTime}
             onExpired={() => {
               toast.error('Session expired!')
               handleLogout()
-            }} 
+            }}
           />
           <ThemeToggle />
         </div>
@@ -180,11 +180,11 @@ function App() {
           transition={{ duration: 0.5 }}
           className="w-full md:w-[70%] md:flex-1 flex flex-col p-1.5 md:p-2 lg:p-4 overflow-y-auto"
         >
-          <ImageCapture 
-            onSuccess={loadRecords} 
-            viewRecord={viewRecord} 
+          <ImageCapture
+            onSuccess={loadRecords}
+            viewRecord={viewRecord}
             editMode={editMode}
-            onClearView={() => { setViewRecord(null); setEditMode(false); }} 
+            onClearView={() => { setViewRecord(null); setEditMode(false); }}
           />
         </motion.div>
 
