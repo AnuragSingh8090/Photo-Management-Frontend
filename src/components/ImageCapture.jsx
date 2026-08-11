@@ -767,7 +767,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
   return (
     <>
-      <div className="h-full flex flex-col md:flex-row gap-2 md:gap-3 xl:gap-4 p-2 md:p-3 xl:p-4 rounded-lg shadow-sm overflow-y-auto md:overflow-hidden" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-primary)' }}>
+      <div className="h-full flex flex-col md:flex-row gap-2 md:gap-3 xl:gap-4 p-2 md:p-3 xl:p-4 overflow-y-auto md:overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
         
         {/* LEFT: Main Display Area (Camera / Upload / Preview) */}
         <div className="h-[250px] md:h-auto md:flex-1 relative rounded-lg overflow-hidden flex flex-col shrink-0" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
@@ -1558,7 +1558,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 onClick={handleCancel}
-                className="flex-1 bg-gray-200 hover:bg-gray-300 transition-smooth rounded-lg py-2 md:py-2.5 lg:py-3 px-3 text-xs md:text-sm xl:text-base font-semibold flex items-center justify-center gap-1 xl:gap-2 text-gray-800"
+                className="flex-1 bg-gray-200 hover:bg-gray-300 transition-smooth rounded-md py-1.5 md:py-2 px-2 text-xs md:text-sm font-semibold flex items-center justify-center gap-1 xl:gap-2 text-gray-800"
               >
                 <MdCancel />
                 Cancel
@@ -1571,7 +1571,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   type="button"
                   onClick={handleCancel}
                   disabled={!hasMedia || loading}
-                  className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-lg py-2 md:py-2.5 lg:py-3 px-3 text-xs md:text-sm xl:text-base font-semibold flex items-center justify-center gap-1 xl:gap-2"
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-smooth rounded-md py-1.5 md:py-2 px-2 text-xs md:text-sm font-semibold flex items-center justify-center gap-1 xl:gap-2"
                 >
                   <MdCancel />
                   Cancel
@@ -1581,7 +1581,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   whileTap={!isFormDisabled ? { scale: 0.98 } : {}}
                   type="submit"
                   disabled={loading || isFormDisabled}
-                  className={`flex-1 py-2 md:py-2.5 lg:py-3 px-3 text-white text-xs md:text-sm xl:text-base font-semibold rounded-lg flex items-center justify-center gap-1 xl:gap-2 transition-smooth ${
+                  className={`flex-1 py-1.5 md:py-2 px-2 text-white text-xs md:text-sm font-semibold rounded-md flex items-center justify-center gap-1 xl:gap-2 transition-smooth ${
                     isFormDisabled
                       ? 'bg-gray-300 cursor-not-allowed'
                       : 'bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md'

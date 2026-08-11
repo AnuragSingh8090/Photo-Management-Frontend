@@ -8,7 +8,7 @@ import Login from './components/Login'
 import ExpiryTimer from './components/ExpiryTimer'
 import { fetchRecords, verifyAuth, logoutUser, checkHealth } from './services/api'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MdLogout } from 'react-icons/md'
+import { MdLogout, MdFormatListBulleted } from 'react-icons/md'
 
 // Camera SVG Icon
 const CameraHeaderIcon = () => (
@@ -27,6 +27,7 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [viewRecord, setViewRecord] = useState(null)
   const [editMode, setEditMode] = useState(false)
+  const [isSliderOpen, setIsSliderOpen] = useState(false)
 
   // Verify auth on mount
   useEffect(() => {
@@ -102,6 +103,17 @@ function App() {
     }
   }
 
+  // Close slider on resize above 1280px
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setIsSliderOpen(false)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const handleLogout = async () => {
     try {
       await logoutUser()
@@ -149,7 +161,7 @@ function App() {
       />
 
       {/* Header */}
-      <div className="px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-primary)' }}>
+      <div className="px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '2px solid var(--border-primary)' }}>
         <div className="flex items-center gap-1.5 md:gap-2">
           <CameraHeaderIcon />
           <div>
@@ -168,17 +180,26 @@ function App() {
             }}
           />
           <ThemeToggle />
+          <button
+            onClick={() => setIsSliderOpen(true)}
+            className="xl:hidden flex items-center justify-center gap-1.5 p-1.5 min-[400px]:px-3 min-[400px]:py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold rounded-lg transition-smooth btn-hover"
+            style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-primary)' }}
+            title="Open Records List"
+          >
+            <MdFormatListBulleted className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+            <span className="hidden min-[400px]:inline">Media List</span>
+          </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col md:flex-row flex-1 overflow-hidden md:gap-0">
-        {/* LEFT SECTION - 70% - Camera/Upload */}
+      <div className="flex flex-col xl:flex-row flex-1 overflow-hidden xl:gap-0 relative">
+        {/* LEFT SECTION - Camera/Upload */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full md:w-[70%] md:flex-1 flex flex-col p-1.5 md:p-2 lg:p-4 overflow-y-auto"
+          className="w-full xl:w-[75%] flex-1 flex flex-col overflow-y-auto border-b md:border-b-0 border-r-0 xl:border-r border-border-primary"
         >
           <ImageCapture
             onSuccess={loadRecords}
@@ -188,24 +209,61 @@ function App() {
           />
         </motion.div>
 
-        {/* RIGHT SECTION - 30% - Records List */}
+        {/* RIGHT SECTION (Desktop >= xl) */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="w-full md:w-[30%] md:min-w-[310px] md:max-w-[400px] flex flex-col h-[50vh] md:h-auto"
+          className="hidden xl:flex w-[25%] min-w-[290px] max-w-[320px] flex-col h-full"
         >
           <RecordsList
             records={records}
             onDelete={loadRecords}
             loading={loading}
-            onViewRecord={(record) => { setViewRecord(record); setEditMode(false); }}
-            onEditRecord={(record) => { setViewRecord(record); setEditMode(true); }}
+            onViewRecord={(record) => { setViewRecord(record); setEditMode(false); setIsSliderOpen(false); }}
+            onEditRecord={(record) => { setViewRecord(record); setEditMode(true); setIsSliderOpen(false); }}
             activeRecordId={viewRecord?.id}
             editMode={editMode}
             onCancelEdit={() => { setViewRecord(null); setEditMode(false); }}
           />
         </motion.div>
+
+        {/* SLIDER (Mobile < xl) */}
+        <AnimatePresence>
+          {isSliderOpen && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0 bg-black/50 z-40 xl:hidden"
+                onClick={() => setIsSliderOpen(false)}
+              />
+              {/* Slider Drawer */}
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="absolute top-0 right-0 bottom-0 w-[85vw] sm:w-[320px] shadow-2xl z-50 xl:hidden flex flex-col"
+                style={{ background: 'var(--bg-primary)' }}
+              >
+                <RecordsList
+                  records={records}
+                  onDelete={loadRecords}
+                  loading={loading}
+                  onViewRecord={(record) => { setViewRecord(record); setEditMode(false); setIsSliderOpen(false); }}
+                  onEditRecord={(record) => { setViewRecord(record); setEditMode(true); setIsSliderOpen(false); }}
+                  activeRecordId={viewRecord?.id}
+                  editMode={editMode}
+                  onCancelEdit={() => { setViewRecord(null); setEditMode(false); }}
+                />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )

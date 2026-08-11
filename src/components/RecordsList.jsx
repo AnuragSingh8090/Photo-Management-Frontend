@@ -23,7 +23,7 @@ const EmptyIcon = () => (
 )
 
 const FilterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 lg:w-5 lg:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 md:w-3.5 md:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
   </svg>
 )
@@ -143,8 +143,8 @@ const MediaThumbnail = ({ media }) => {
             />
             {imageState === 'loaded' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                <div className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
-                  <MdPlayArrow className="text-gray-800 dark:text-white w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5" />
+                <div className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
+                  <MdPlayArrow className="text-gray-800 dark:text-white w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4" />
                 </div>
               </div>
             )}
@@ -323,17 +323,17 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
       }}
     >
       {/* Header */}
-      <div className="px-2 py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-3 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
-        <div className="flex items-center justify-between mb-1 md:mb-1.5 lg:mb-2.5">
-          <div className="flex items-center gap-1 md:gap-1.5 lg:gap-2">
-            <h2 className="text-sm md:text-base lg:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+      <div className="px-2 py-1 md:px-2 md:py-1.5 lg:px-3 lg:py-2 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-primary)' }}>
+        <div className="flex items-center justify-between mb-1 lg:mb-1.5">
+          <div className="flex items-center gap-1 md:gap-1.5">
+            <h2 className="text-xs md:text-sm lg:text-base font-bold" style={{ color: 'var(--text-primary)' }}>
               Records
             </h2>
             {!loading && records.length > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="text-white text-xs font-bold px-2 py-1 rounded-full"
+                className="text-white text-[10px] md:text-[11px] font-bold px-1.5 py-0.5 md:px-2 md:py-1 rounded-full leading-none"
                 style={{ background: 'var(--accent-blue)' }}
               >
                 {records.length}
@@ -345,7 +345,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="btn-hover flex items-center gap-1 md:gap-1.5 lg:gap-2 px-1.5 md:px-2 md:py-1 lg:px-3 lg:py-1.5 rounded-lg transition-smooth text-[10px] md:text-[11px] lg:text-sm"
+              className="btn-hover flex items-center gap-1 px-1.5 py-1 md:px-2 md:py-1 rounded-lg transition-smooth text-[9px] md:text-[10px] lg:text-[11px]"
               style={{
                 background: 'var(--bg-secondary)',
                 border: '1px solid var(--border-primary)',
@@ -369,7 +369,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg z-50 overflow-hidden"
+                  className="absolute right-0 mt-1 w-32 md:w-36 lg:w-40 rounded-lg shadow-lg z-50 overflow-hidden"
                   style={{
                     background: 'var(--bg-primary)',
                     border: '1px solid var(--border-primary)'
@@ -378,7 +378,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   <div className="py-1">
                     <button
                       onClick={() => handleSortChange('newest')}
-                      className="w-full px-4 py-2.5 text-left text-sm flex items-center justify-between gap-3 transition-smooth"
+                      className="w-full px-2 py-1.5 md:px-3 md:py-2 text-left text-[10px] md:text-[11px] lg:text-xs flex items-center justify-between gap-2 transition-smooth"
                       style={{
                         background: sortOrder === 'newest' ? 'var(--accent-blue-light)' : 'transparent',
                         color: sortOrder === 'newest' ? 'var(--accent-blue)' : 'var(--text-primary)'
@@ -400,7 +400,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                     </button>
                     <button
                       onClick={() => handleSortChange('oldest')}
-                      className="w-full px-4 py-2.5 text-left text-sm flex items-center justify-between gap-3 transition-smooth"
+                      className="w-full px-2 py-1.5 md:px-3 md:py-2 text-left text-[10px] md:text-[11px] lg:text-xs flex items-center justify-between gap-2 transition-smooth"
                       style={{
                         background: sortOrder === 'oldest' ? 'var(--accent-blue-light)' : 'transparent',
                         color: sortOrder === 'oldest' ? 'var(--accent-blue)' : 'var(--text-primary)'
@@ -431,7 +431,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
         <div className="flex items-center gap-1.5 md:gap-2">
           {/* Select All Checkbox - Icon Only */}
           <label 
-            className="flex items-center justify-center cursor-pointer w-7 h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-lg transition-smooth" 
+            className="flex items-center justify-center cursor-pointer w-5 h-5 md:w-6 md:h-6 rounded-lg transition-smooth" 
             style={{ 
               userSelect: 'none',
               background: 'transparent'
@@ -444,7 +444,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
               type="checkbox"
               checked={isAllSelected}
               onChange={toggleSelectAll}
-              className="w-4 h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 cursor-pointer"
+              className="w-3 h-3 md:w-3.5 md:h-3.5 cursor-pointer"
               style={{ 
                 accentColor: 'var(--accent-blue)',
                 borderRadius: '6px'
@@ -460,7 +460,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
               placeholder="Search records..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-6 pr-2 py-1 md:pl-7 md:py-1.5 lg:pl-10 lg:pr-3 lg:py-2 rounded-lg text-[10px] md:text-[11px] lg:text-sm focus:outline-none transition-smooth"
+              className="w-full pl-6 pr-2 py-1 lg:pl-8 lg:pr-2 lg:py-1.5 rounded-lg text-[9px] md:text-[10px] lg:text-[11px] focus:outline-none transition-smooth"
               style={{
                 background: 'var(--bg-primary)',
                 border: '1px solid var(--border-primary)',
@@ -481,7 +481,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
           <button
             onClick={openMultiDeleteModal}
             disabled={selectedIds.length === 0}
-            className="btn-hover p-1.5 md:p-2 lg:p-2.5 rounded-lg transition-smooth border flex items-center justify-center"
+            className="btn-hover p-1 md:p-1.5 rounded-lg transition-smooth border flex items-center justify-center"
             style={{
               background: selectedIds.length > 0 ? '#dc2626' : 'var(--bg-tertiary)',
               borderColor: selectedIds.length > 0 ? '#dc2626' : 'var(--border-primary)',
@@ -490,7 +490,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
             }}
             title={selectedIds.length > 0 ? `Delete ${selectedIds.length} selected` : 'Select items to delete'}
           >
-            <MdDelete className="w-4 h-4 md:w-4 md:h-4 lg:w-5 lg:h-5" />
+            <MdDelete className="w-3 h-3 md:w-3.5 md:h-3.5" />
           </button>
         </div>
       </div>
@@ -518,7 +518,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
             </p>
           </motion.div>
         ) : (
-          <div className="space-y-2 p-3">
+          <div className="space-y-1.5 p-1.5">
             <AnimatePresence mode="popLayout">
               {filteredRecords.map((record, index) => {
                 const isSelected = selectedIds.includes(record.id)
@@ -539,7 +539,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: -20, scale: 0.95 }}
                   transition={{ duration: 0.3, delay: index * 0.03 }}
-                  className="flex gap-2 md:gap-2.5 lg:gap-3 p-2 md:p-2.5 lg:p-3 rounded-lg transition-all shadow-sm hover:shadow-md relative group cursor-pointer"
+                  className="flex gap-1.5 md:gap-2 lg:gap-2 p-1.5 md:p-2 rounded-lg transition-all shadow-sm hover:shadow-md relative group cursor-pointer"
                   style={{
                     background: isSelected || isActiveView || isActiveEdit
                       ? 'var(--accent-blue-light)'
@@ -576,7 +576,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => toggleSelect(record.id)}
-                      className="w-5 h-5 cursor-pointer shadow-md bg-white border border-gray-300"
+                      className="w-[18px] h-[18px] cursor-pointer shadow-md bg-white border border-gray-300"
                       style={{ 
                         accentColor: 'var(--accent-blue)',
                         borderRadius: '6px'
@@ -591,7 +591,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                   {/* Details */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <h3 
-                      className="text-[11px] md:text-xs lg:text-base font-bold mb-0.5 md:mb-1 lg:mb-1.5 line-clamp-2"
+                      className="text-[11px] md:text-[12px] lg:text-[14px] font-bold mb-0.5 md:mb-1 lg:mb-1.5 line-clamp-1"
                       style={{ color: 'var(--text-primary)' }}
                       title={record.name}
                     >
@@ -599,12 +599,12 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                     </h3>
                     <div className="space-y-0.5 md:space-y-1 lg:space-y-1">
                       <div className="flex items-center gap-1 md:gap-1.5 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
-                        <MdCalendarToday className="w-3 h-3 md:w-3.5 md:h-3.5 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
-                        <span className="text-[9px] md:text-[10px] lg:text-sm font-medium">{record.date}</span>
+                        <MdCalendarToday className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
+                        <span className="text-[8px] md:text-[9px] lg:text-[10px] font-medium">{record.date}</span>
                       </div>
                       <div className="flex items-center gap-1 md:gap-1.5 lg:gap-1.5" style={{ color: 'var(--text-secondary)' }}>
-                        <MdAccessTime className="w-3 h-3 md:w-3.5 md:h-3.5 lg:w-[15px] lg:h-[15px] flex-shrink-0" />
-                        <span className="text-[9px] md:text-[10px] lg:text-sm font-medium">{formatTime(record.time)}</span>
+                        <MdAccessTime className="w-2.5 h-2.5 md:w-3 md:h-3 flex-shrink-0" />
+                        <span className="text-[8px] md:text-[9px] lg:text-[10px] font-medium">{formatTime(record.time)}</span>
                       </div>
                     </div>
                   </div>
@@ -618,7 +618,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                             e.stopPropagation()
                             onCancelEdit && onCancelEdit()
                           }}
-                          className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                          className="btn-hover p-1 md:p-1.5 rounded-lg transition-smooth"
                           style={{ 
                             color: '#dc2626',
                             border: '1px solid #dc2626',
@@ -632,7 +632,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                           }}
                           title="Cancel Edit"
                         >
-                          <MdClose className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                          <MdClose className="w-3 h-3 md:w-3.5 md:h-3.5" />
                         </button>
                       ) : (
                         <>
@@ -645,7 +645,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                               }
                               onEditRecord && onEditRecord(record)
                             }}
-                            className="btn-hover p-1.5 md:p-1.5 lg:p-2 rounded-lg transition-smooth"
+                            className="btn-hover p-1 md:p-1.5 rounded-lg transition-smooth"
                             style={{ 
                               color: 'var(--accent-blue)',
                               border: '1px solid var(--accent-blue)',
@@ -659,7 +659,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                             }}
                             title="Edit"
                           >
-                            <MdEdit className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                            <MdEdit className="w-3 h-3 md:w-3.5 md:h-3.5" />
                           </button>
                           <button
                             onClick={(e) => {
@@ -670,7 +670,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                               }
                               openDeleteModal(record)
                             }}
-                            className="btn-hover p-1.5 lg:p-2 rounded-lg transition-smooth"
+                            className="btn-hover p-1 md:p-1.5 rounded-lg transition-smooth"
                             style={{ 
                               color: '#dc2626',
                               border: '1px solid #dc2626',
@@ -684,7 +684,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
                             }}
                             title="Delete"
                           >
-                            <MdDelete className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                            <MdDelete className="w-3 h-3 md:w-3.5 md:h-3.5" />
                           </button>
                         </>
                       )}
