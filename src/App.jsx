@@ -12,7 +12,7 @@ import { MdLogout } from 'react-icons/md'
 
 // Camera SVG Icon
 const CameraHeaderIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 md:w-7 md:h-7 xl:w-9 xl:h-9" style={{ color: 'var(--text-primary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 md:w-6 md:h-6 xl:w-7 xl:h-7" style={{ color: 'var(--text-primary)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
     <circle cx="12" cy="13" r="3" />
   </svg>
@@ -149,17 +149,17 @@ function App() {
       />
 
       {/* Header */}
-      <div className="px-2 py-1.5 md:px-4 md:py-2 xl:px-6 xl:py-3 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-primary)' }}>
-        <div className="flex items-center gap-1.5 md:gap-2 xl:gap-3">
+      <div className="px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '1px solid var(--border-primary)' }}>
+        <div className="flex items-center gap-1.5 md:gap-2">
           <CameraHeaderIcon />
           <div>
-            <h1 className="text-sm md:text-lg lg:text-xl xl:text-2xl font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Media Manager</h1>
-            <p className="text-[9px] md:text-[10px] lg:text-xs xl:text-sm" style={{ color: 'var(--text-secondary)' }}>Organize and manage your media</p>
+            <h1 className="text-xs md:text-sm lg:text-base xl:text-lg font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Media Manager</h1>
+            <p className="text-[8px] md:text-[9px] lg:text-[10px] xl:text-xs" style={{ color: 'var(--text-secondary)' }}>Organize and manage your media</p>
           </div>
         </div>
 
         {/* Right Header Actions */}
-        <div className="flex items-center gap-2 md:gap-3 min-[1100px]:gap-6 scale-[0.7] md:scale-75 min-[1100px]:scale-100 origin-right">
+        <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
           <ExpiryTimer
             expiresAt={expiryTime}
             onExpired={() => {
