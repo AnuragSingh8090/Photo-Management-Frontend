@@ -767,10 +767,10 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
   return (
     <>
-      <div className="h-full flex flex-col md:flex-row gap-2 md:gap-3 xl:gap-4 p-2 md:p-3 xl:p-4 overflow-y-auto md:overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+      <div className="h-full flex flex-col md:flex-row gap-2 md:gap-3 xl:gap-4 p-2 md:p-3 xl:p-4 overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
         
         {/* LEFT: Main Display Area (Camera / Upload / Preview) */}
-        <div className="h-[250px] md:h-auto md:flex-1 relative rounded-lg overflow-hidden flex flex-col shrink-0" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
+        <div className="h-[45%] md:h-auto md:flex-1 relative rounded-lg overflow-hidden flex flex-col shrink-0" style={{ background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
           {/* Hidden file input */}
           <input
             ref={fileInputRef}
@@ -937,7 +937,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                         <CameraIcon />
                         <span>Camera</span>
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => fileInputRef.current?.click()}
                         className="btn-hover font-semibold rounded-lg py-1.5 md:py-2 px-3 md:px-6 flex items-center justify-center gap-1.5 md:gap-2 transition-smooth min-w-[90px] md:min-w-[120px] text-xs md:text-sm"
                         style={{ 
@@ -950,7 +950,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                       >
                         <UploadIcon />
                         <span>Upload</span>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </motion.div>
@@ -1017,17 +1017,18 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
           </AnimatePresence>
         </div>
 
-        <div className="w-full md:w-[35%] md:min-w-[240px] md:max-w-[350px] flex flex-col shrink-0 overflow-hidden md:h-full">
+        <div className="w-full md:w-[250px] h-[55%] md:h-full flex flex-col shrink-0 overflow-hidden">
           
-          <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <form onSubmit={handleSubmit} className="flex flex-col h-full min-h-0 relative">
+            <div className="flex-1 overflow-y-auto min-h-0 pb-2 pr-1">
             <div className="shrink-0">
-              <h2 className="text-sm md:text-base lg:text-lg xl:text-xl font-bold mb-2 md:mb-3" style={{ color: 'var(--text-primary)' }}>
+              <h2 className="text-sm md:text-[15px] font-bold mb-1.5 md:mb-2" style={{ color: 'var(--text-primary)' }}>
               Record Details
             </h2>
 
             {/* Name Field */}
             <div className="mb-3">
-              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>
+              <label className="block text-[10px] md:text-xs font-semibold mb-1" style={{ color: 'var(--text-secondary)' }}>
                 Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -1037,7 +1038,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                 onChange={handleChange}
                 placeholder="Enter record name"
                 disabled={isViewMode}
-                className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth focus:outline-none focus:ring-2 ${isViewMode ? 'opacity-80 cursor-not-allowed bg-gray-100' : ''}`}
+                className={`w-full px-3 py-2 md:px-2.5 md:py-1.5 text-sm md:text-xs rounded-lg border transition-smooth focus:outline-none focus:ring-2 ${isViewMode ? 'opacity-80 cursor-not-allowed bg-gray-100' : ''}`}
                 style={{ 
                   background: isViewMode ? 'var(--bg-secondary)' : 'var(--bg-primary)',
                   borderColor: 'var(--border-primary)',
@@ -1065,13 +1066,13 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
             {/* Date Field */}
             <div className="mb-3">
-              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-[10px] md:text-xs font-semibold text-gray-700 mb-1">
                 Date <span className="text-red-500">*</span>
               </label>
               <div className="relative" ref={dateDropdownRef}>
                 <div
                   onClick={() => hasMedia && !isViewMode && setIsDateDropdownOpen(!isDateDropdownOpen)}
-                  className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth flex items-center gap-1 md:gap-2 ${
+                  className={`w-full px-3 py-2 md:px-2.5 md:py-1.5 text-sm md:text-xs rounded-lg border transition-smooth flex items-center gap-2 md:gap-1.5 ${
                     !hasMedia || isViewMode
                       ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed opacity-80'
                       : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -1250,13 +1251,13 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
             {/* Time Field */}
             <div className="mb-3">
-              <label className="block text-[10px] md:text-[11px] lg:text-xs xl:text-sm font-semibold text-gray-700 mb-1">
+              <label className="block text-[10px] md:text-xs font-semibold text-gray-700 mb-1">
                 Time <span className="text-red-500">*</span>
               </label>
               <div className="relative" ref={timeDropdownRef}>
                 <div
                   onClick={() => hasMedia && !isViewMode && setIsTimeDropdownOpen(!isTimeDropdownOpen)}
-                  className={`w-full px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 text-xs md:text-sm xl:text-base rounded-lg border transition-smooth flex items-center gap-1 md:gap-2 ${
+                  className={`w-full px-3 py-2 md:px-2.5 md:py-1.5 text-sm md:text-xs rounded-lg border transition-smooth flex items-center gap-2 md:gap-1.5 ${
                     !hasMedia || isViewMode
                       ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed opacity-80'
                       : 'bg-white border-gray-300 text-gray-800 cursor-pointer hover:border-blue-500'
@@ -1425,16 +1426,16 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
             </div>
 
           {/* Thumbnails Section */}
-          <div className="flex-1 overflow-y-auto flex flex-col min-h-0 mt-2" style={{ borderTop: '1px solid var(--border-primary)' }}>
+          <div className="shrink-0 mt-2 flex flex-col" style={{ borderTop: '1px solid var(--border-primary)' }}>
             <div className="flex items-center justify-between my-2 shrink-0 pr-1">
-              <h3 className="text-sm font-bold" style={{ color: 'var(--text-secondary)' }}>
+              <h3 className="text-xs font-bold" style={{ color: 'var(--text-secondary)' }}>
                 Photos and Videos ({mediaFiles.length})
               </h3>
               {!isViewMode && (
                 <button
                   type="button"
                   onClick={() => setIsAddMode(true)}
-                  className="px-2 py-1 flex items-center gap-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-smooth text-[10px] lg:text-xs font-semibold border border-gray-200 dark:border-gray-700"
+                  className="px-1.5 py-1 flex items-center gap-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-smooth text-[9px] font-semibold border border-gray-200 dark:border-gray-700"
                   title="Add Media"
                 >
                   <MdAdd size={14} />
@@ -1444,8 +1445,8 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
             </div>
             
             {hasMedia ? (
-              <div className="flex-1 overflow-y-auto p-1">
-                <div className="grid grid-cols-3 gap-2">
+              <div className="p-1 pb-4">
+                <div className="grid grid-cols-3 min-[500px]:grid-cols-5 md:grid-cols-3 gap-1.5 md:gap-2">
                   {mediaFiles.map((media, index) => (
                   <motion.div
                     key={index}
@@ -1485,8 +1486,8 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                             preload="metadata"
                           />
                           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                            <div className="w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
-                              <MdPlayArrow size={20} className="text-gray-800 dark:text-white" />
+                            <div className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center shadow-md">
+                              <MdPlayArrow className="text-gray-800 dark:text-white w-2.5 h-2.5 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4" />
                             </div>
                           </div>
                           
@@ -1549,6 +1550,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
               </div>
             )}
           </div>
+          </div> {/* Close unified scroll container */}
 
           {/* Action Buttons at bottom */}
           <div className="shrink-0 flex gap-1 md:gap-2 xl:gap-3 mt-2 pt-2 md:pt-3 border-t border-gray-200 sticky bottom-0 pb-1 md:pb-0 md:static" style={{ background: 'var(--bg-primary)' }}>

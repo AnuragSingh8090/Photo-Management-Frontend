@@ -161,7 +161,7 @@ function App() {
       />
 
       {/* Header */}
-      <div className="px-2 py-1 md:px-3 md:py-1.5 xl:px-4 xl:py-2 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '2px solid var(--border-primary)' }}>
+      <div className="px-3 py-2 md:px-3 md:py-1.5 xl:px-4 xl:py-2 shadow-sm flex-shrink-0 flex items-center justify-between" style={{ background: 'var(--bg-primary)', borderBottom: '2px solid var(--border-primary)' }}>
         <div className="flex items-center gap-1.5 md:gap-2">
           <CameraHeaderIcon />
           <div>
@@ -181,12 +181,12 @@ function App() {
           />
           <ThemeToggle />
           <button
-            onClick={() => setIsSliderOpen(true)}
-            className="xl:hidden flex items-center justify-center gap-1.5 p-1.5 min-[400px]:px-3 min-[400px]:py-1.5 md:px-4 md:py-2 text-xs md:text-sm font-semibold rounded-lg transition-smooth btn-hover"
+            onClick={() => setIsSliderOpen(!isSliderOpen)}
+            className="xl:hidden flex items-center justify-center gap-1.5 p-1.5 md:p-2 text-[10px] md:text-xs font-semibold rounded-lg transition-smooth btn-hover"
             style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)', border: '1px solid var(--border-primary)' }}
             title="Open Records List"
           >
-            <MdFormatListBulleted className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+            <MdFormatListBulleted className="w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0" />
             <span className="hidden min-[400px]:inline">Media List</span>
           </button>
         </div>

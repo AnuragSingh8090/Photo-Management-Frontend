@@ -88,12 +88,12 @@ const MediaThumbnail = ({ media }) => {
   const coverMedia = firstMedia
 
   return (
-    <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg flex-shrink-0 relative">
+    <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-lg flex-shrink-0 relative mr-[4px] mb-[4px]">
       {/* Background stacked cards for multiple media */}
       {isMultiple && (
         <>
-          <div className="absolute inset-0 rounded-lg shadow-md translate-x-2 translate-y-2 z-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
-          <div className="absolute inset-0 rounded-lg shadow-md translate-x-1 translate-y-1 z-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
+          <div className="absolute inset-0 rounded-lg shadow-md translate-x-[5px] translate-y-[5px] z-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
+          <div className="absolute inset-0 rounded-lg shadow-md translate-x-[2.5px] translate-y-[2.5px] z-10 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500" />
         </>
       )}
 
@@ -210,14 +210,48 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
   // Filter and sort records
   const filteredRecords = records
     .filter(record =>
-      record.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.date.includes(searchTerm)
+      (record.name || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+      (record.date || '').includes(searchTerm)
     )
     .sort((a, b) => {
       const dateA = new Date(`${a.date}T${a.time}`)
       const dateB = new Date(`${b.date}T${b.time}`)
       return sortOrder === 'newest' ? dateB - dateA : dateA - dateB
     })
+
+  // Group records by date
+  const groupedRecords = filteredRecords.reduce((acc, record) => {
+    const date = record.date || 'Unknown Date';
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(record);
+    return acc;
+  }, {});
+
+  // Determine the order of dates based on sortOrder
+  const sortedDates = Object.keys(groupedRecords).sort((a, b) => {
+    if (a === 'Unknown Date') return 1;
+    if (b === 'Unknown Date') return -1;
+    const dateA = new Date(a);
+    const dateB = new Date(b);
+    return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+  });
+
+  const getTodayDateString = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  };
+  const todayDateStr = getTodayDateString();
+
+  // Flatten for AnimatePresence
+  const listItems = [];
+  sortedDates.forEach(date => {
+    listItems.push({ type: 'divider', date: date, id: `divider-${date}` });
+    groupedRecords[date].forEach(record => {
+      listItems.push({ type: 'record', record: record, id: record.id });
+    });
+  });
 
   const handleDelete = async (id) => {
     try {
@@ -460,7 +494,7 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
               placeholder="Search records..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-6 pr-2 py-1 lg:pl-8 lg:pr-2 lg:py-1.5 rounded-lg text-[9px] md:text-[10px] lg:text-[11px] focus:outline-none transition-smooth"
+              className="w-full pl-7 pr-2.5 py-1.5 lg:pl-8 lg:pr-3 lg:py-2 rounded-lg text-[10px] md:text-[11px] lg:text-xs focus:outline-none transition-smooth"
               style={{
                 background: 'var(--bg-primary)',
                 border: '1px solid var(--border-primary)',
@@ -520,7 +554,28 @@ function RecordsList({ records, onDelete, loading, onViewRecord, onEditRecord, a
         ) : (
           <div className="space-y-1.5 p-1.5">
             <AnimatePresence mode="popLayout">
-              {filteredRecords.map((record, index) => {
+              {listItems.map((item, index) => {
+                if (item.type === 'divider') {
+                  const date = item.date;
+                  const isToday = date === todayDateStr;
+                  return (
+                    <motion.div 
+                      key={item.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center my-1.5 md:my-2 px-1"
+                    >
+                      <div className="flex-1 border-t" style={{ borderColor: 'var(--border-primary)' }}></div>
+                      <span className="px-2 text-[10px] md:text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>
+                        {isToday ? 'Today' : date}
+                      </span>
+                      <div className="flex-1 border-t" style={{ borderColor: 'var(--border-primary)' }}></div>
+                    </motion.div>
+                  )
+                }
+
+                const record = item.record;
                 const isSelected = selectedIds.includes(record.id)
                 const isActiveView = record.id === activeRecordId && !editMode
                 const isActiveEdit = record.id === activeRecordId && editMode
