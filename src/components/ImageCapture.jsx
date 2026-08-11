@@ -2,8 +2,9 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Webcam from 'react-webcam'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
-import { MdSave, MdCancel, MdClose, MdDelete, MdAdd, MdVideocam, MdStop, MdPlayArrow } from 'react-icons/md'
+import { MdSave, MdCancel, MdClose, MdDelete, MdAdd, MdVideocam, MdStop, MdPlayArrow, MdPause, MdPrint } from 'react-icons/md'
 import { saveRecord, updateRecord, addMediaToRecord, deleteMediaFromRecord } from '../services/api'
+import CustomVideoPlayer from './CustomVideoPlayer'
 import { getCurrentDate, getCurrentTime, formatTime } from '../utils/dateTime'
 import DeleteConfirmModal from './DeleteConfirmModal'
 
@@ -78,6 +79,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
   const [isAddMode, setIsAddMode] = useState(true) // Whether the main area shows Add options
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [recordingTime, setRecordingTime] = useState(0)
   const [mediaFiles, setMediaFiles] = useState([]) // { file: File, preview: string, type: 'image'|'video' }
   const [selectedIndex, setSelectedIndex] = useState(0) // Which media is currently previewed
@@ -157,6 +159,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
       setErrors({})
       setIsCameraActive(false)
       setIsRecording(false)
+      setIsPaused(false)
       setIsAddMode(true)
       setSelectedIndex(0)
       setDeletedMediaNames([])
@@ -209,14 +212,14 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
 
   // Recording timer
   useEffect(() => {
-    if (isRecording) {
-      setRecordingTime(0)
+    if (isRecording && !isPaused) {
       recordingTimerRef.current = setInterval(() => {
         setRecordingTime(prev => {
           if (prev + 1 >= 600) {
             if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
               mediaRecorderRef.current.stop()
               setIsRecording(false)
+              setIsPaused(false)
               toast.info('10 minuites reached')
             }
           }
@@ -228,14 +231,16 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
         clearInterval(recordingTimerRef.current)
         recordingTimerRef.current = null
       }
-      setRecordingTime(0)
+      if (!isRecording) {
+        setRecordingTime(0)
+      }
     }
     return () => {
       if (recordingTimerRef.current) {
         clearInterval(recordingTimerRef.current)
       }
     }
-  }, [isRecording])
+  }, [isRecording, isPaused])
 
   /**
    * Capture photo from webcam
@@ -289,7 +294,12 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
         }
       }
       
+      let hasStopped = false;
+      
       mediaRecorder.onstop = () => {
+        if (hasStopped) return;
+        hasStopped = true;
+        
         const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' })
         const file = new File([blob], `video-${Date.now()}.webm`, { type: 'video/webm' })
         const videoUrl = URL.createObjectURL(blob)
@@ -315,6 +325,8 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
       mediaRecorderRef.current = mediaRecorder
       mediaRecorder.start(100) // collect data every 100ms
       setIsRecording(true)
+      setIsPaused(false)
+      setRecordingTime(0)
     } catch (err) {
       console.error('MediaRecorder error:', err)
       toast.error('Video recording not supported in this browser', { autoClose: 2000 })
@@ -328,6 +340,19 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
       mediaRecorderRef.current.stop()
       setIsRecording(false)
+      setIsPaused(false)
+    }
+  }, [])
+
+  const togglePauseResume = useCallback(() => {
+    if (mediaRecorderRef.current) {
+      if (mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.pause()
+        setIsPaused(true)
+      } else if (mediaRecorderRef.current.state === 'paused') {
+        mediaRecorderRef.current.resume()
+        setIsPaused(false)
+      }
     }
   }, [])
 
@@ -650,6 +675,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
     setErrors({})
     setIsCameraActive(false)
     setIsRecording(false)
+    setIsPaused(false)
     setIsAddMode(true)
     setSelectedIndex(0)
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
@@ -661,6 +687,83 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
   const isFormDisabled = !formData.name.trim() || !formData.date || !formData.time || !hasMedia || (isViewMode && mediaFiles[selectedIndex]?.isStored)
   
   const currentPreview = mediaFiles[selectedIndex]
+
+  const handlePrintImage = useCallback(() => {
+    if (currentPreview?.type === 'image' && currentPreview?.preview) {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Print Image</title>
+              <style>
+                body { 
+                  margin: 0; 
+                  padding: 20px;
+                  display: flex; 
+                  flex-direction: column;
+                  align-items: center; 
+                  min-height: 100vh; 
+                  background-color: white; 
+                  box-sizing: border-box;
+                  font-family: system-ui, -apple-system, sans-serif;
+                }
+                .header {
+                  text-align: center;
+                  margin-bottom: 20px;
+                  width: 100%;
+                }
+                .name {
+                  font-size: 16px;
+                  font-weight: bold;
+                  margin: 0 0 4px 0;
+                  color: #000;
+                }
+                .datetime {
+                  font-size: 14px;
+                  color: #666;
+                  margin: 0;
+                }
+                .image-container {
+                  flex: 1;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                }
+                img { max-width: 100%; max-height: calc(100vh - 100px); object-fit: contain; }
+                @media print {
+                  @page { margin: 0; }
+                  body { padding: 1cm; }
+                }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <p class="name">Name : ${formData.name || 'Unknown'}</p>
+                <p class="datetime">Date & time : ${formData.date || ''} ${formData.time ? formatTime(formData.time) : ''}</p>
+              </div>
+              <div class="image-container">
+                <img src="${currentPreview.preview}" id="print-image" />
+              </div>
+              <script>
+                const img = document.getElementById('print-image');
+                img.onload = () => {
+                  setTimeout(() => {
+                    window.print();
+                  }, 250); // slight delay to ensure rendering
+                };
+                window.onafterprint = () => {
+                  window.close();
+                };
+              </script>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
+    }
+  }, [currentPreview, formData.name, formData.date, formData.time]);
 
   return (
     <>
@@ -703,7 +806,7 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   {/* Recording indicator */}
                   {isRecording && (
                     <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg z-20 recording-pulse">
-                      <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+                      {!isPaused ? <div className="w-3 h-3 bg-white rounded-full animate-pulse" /> : <MdPause className="text-white" size={16} />}
                       <span className="font-bold text-sm">{formatRecordingTime(recordingTime)}</span>
                     </div>
                   )}
@@ -747,20 +850,36 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                     )}
                     
                     {isRecording ? (
-                      <button
-                        onClick={stopRecording}
-                        className="btn-hover font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center justify-center gap-2 whitespace-nowrap min-w-[110px] lg:min-w-[130px] text-xs lg:text-sm"
-                        style={{ 
-                          background: '#dc2626', 
-                          color: 'white',
-                          boxShadow: 'var(--shadow-lg)' 
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
-                        onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}
-                      >
-                        <MdStop size={20} />
-                        Stop Recording
-                      </button>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={togglePauseResume}
+                          className="btn-hover font-semibold rounded-lg py-2 px-3 transition-smooth flex items-center justify-center gap-2 whitespace-nowrap text-xs lg:text-sm"
+                          style={{ 
+                            background: isPaused ? '#16a34a' : '#f59e0b', 
+                            color: 'white',
+                            boxShadow: 'var(--shadow-lg)' 
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}
+                        >
+                          {isPaused ? <MdPlayArrow size={20} /> : <MdPause size={20} />}
+                          {isPaused ? 'Resume' : 'Pause'}
+                        </button>
+                        <button
+                          onClick={stopRecording}
+                          className="btn-hover font-semibold rounded-lg py-2 px-4 transition-smooth flex items-center justify-center gap-2 whitespace-nowrap text-xs lg:text-sm"
+                          style={{ 
+                            background: '#dc2626', 
+                            color: 'white',
+                            boxShadow: 'var(--shadow-lg)' 
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.filter = 'brightness(1.1)'}
+                          onMouseLeave={(e) => e.currentTarget.style.filter = 'brightness(1)'}
+                        >
+                          <MdStop size={20} />
+                          Stop
+                        </button>
+                      </div>
                     ) : (
                       <button
                         onClick={startRecording}
@@ -855,28 +974,33 @@ function ImageCapture({ onSuccess, viewRecord, onClearView, editMode }) {
                   </div>
                 ) : (
                   <div className="w-full h-full relative flex items-center justify-center">
-                    <video
-                      src={currentPreview?.preview}
-                      className="w-full h-full object-contain"
-                      muted
-                      preload="metadata"
-                      controls
-                    />
+                    <CustomVideoPlayer src={currentPreview?.preview} />
                   </div>
                 )}
                 
                 {/* Top right actions (always visible) */}
                 <div className="absolute top-3 right-3 flex gap-2 z-10 transition-opacity">
-                  <button
-                    onClick={() => setPreviewMedia({ url: currentPreview?.preview, type: currentPreview?.type })}
-                    className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-gray-800 hover:bg-gray-100 hover:scale-110 transition-smooth dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-                    title="View Fullscreen"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                  </button>
+                  {currentPreview?.type === 'image' && (
+                    <>
+                      <button
+                        onClick={handlePrintImage}
+                        className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-gray-800 hover:bg-gray-100 hover:scale-110 transition-smooth dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                        title="Print Image"
+                      >
+                        <MdPrint size={18} />
+                      </button>
+                      <button
+                        onClick={() => setPreviewMedia({ url: currentPreview?.preview, type: currentPreview?.type })}
+                        className="w-9 h-9 rounded-full bg-white shadow-md flex items-center justify-center text-gray-800 hover:bg-gray-100 hover:scale-110 transition-smooth dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                        title="View Fullscreen"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                          <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                      </button>
+                    </>
+                  )}
                   {!isViewMode && (
                     <button
                       onClick={() => setDeleteTarget(selectedIndex)}
